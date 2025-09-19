@@ -4,8 +4,8 @@ import { AuthProvider } from '@/context/auth-context';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'TurboBoard',
-  description: 'Your AI-powered dashboard for supercharging content creation.',
+  title: 'TurboConteúdo',
+  description: 'Seu painel com IA para turbinar a criação de conteúdo.',
 };
 
 export default function RootLayout({
