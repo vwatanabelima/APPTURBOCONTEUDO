@@ -5,7 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
   title: 'TurboBoard',
-  description: 'Área de Membros Completa com Firebase Auth',
+  description: 'Your AI-powered dashboard for supercharging content creation.',
 };
 
 export default function RootLayout({
