@@ -80,7 +80,7 @@ export default function LoginPage() {
             <div className="mx-auto mb-4">
               <Icons.logo className="h-12 w-12 text-primary" />
             </div>
-            <CardTitle className="text-3xl font-bold">Bem-vindo ao TurboConteúdo</CardTitle>
+            <CardTitle className="text-2xl font-bold sm:text-3xl">Bem-vindo ao TurboConteúdo</CardTitle>
             <CardDescription>Faça login para turbinar seu conteúdo</CardDescription>
           </CardHeader>
           <CardContent>

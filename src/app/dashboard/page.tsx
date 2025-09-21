@@ -51,9 +51,9 @@ export default function DashboardPage() {
     return (
       <div className="space-y-8">
         <h2 className="text-2xl font-semibold tracking-tight">Módulos</h2>
-        <div className="flex space-x-4">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="w-[250px]">
+        <div className="flex space-x-4 overflow-x-auto p-1">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="min-w-[280px] flex-shrink-0">
               <Skeleton className="h-[444px] w-full rounded-lg" />
             </div>
           ))}
@@ -75,14 +75,16 @@ export default function DashboardPage() {
           {modules.map((module) => {
             const isCompleted = progress ? !!progress[module.id] : false;
             return (
-              <CarouselItem key={module.id} className="basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5">
-                <ModuleCard module={module} isCompleted={isCompleted} />
+              <CarouselItem key={module.id} className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5">
+                <div className="p-1">
+                  <ModuleCard module={module} isCompleted={isCompleted} />
+                </div>
               </CarouselItem>
             );
           })}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="hidden sm:flex" />
+        <CarouselNext className="hidden sm:flex" />
       </Carousel>
     </div>
   );

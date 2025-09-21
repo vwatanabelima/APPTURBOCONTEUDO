@@ -39,12 +39,12 @@ export function ModuleCard({ module, isCompleted }: ModuleCardProps) {
 
   return (
     <Link href={`/dashboard/module/${module.id}`} passHref>
-      <Card className="group relative block h-[444px] w-[250px] overflow-hidden rounded-lg border-none bg-card shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
+      <Card className="group relative block h-[444px] w-full overflow-hidden rounded-lg border-none bg-card shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
         <Image
           src={imageUrl}
           alt={title}
-          width={300}
-          height={533}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
           className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-75"
           data-ai-hint="movie poster"
         />
