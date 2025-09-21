@@ -37,8 +37,9 @@ export function ModuleCard({ module, isCompleted }: ModuleCardProps) {
         <Image
           src={imageUrl}
           alt={title}
-          fill
-          className="object-cover transition-opacity duration-300 group-hover:opacity-75"
+          width={300}
+          height={533}
+          className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-75"
           data-ai-hint="movie poster"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
