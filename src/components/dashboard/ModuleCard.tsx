@@ -13,12 +13,16 @@ type ModuleCardProps = {
 
 export function ModuleCard({ module, isCompleted }: ModuleCardProps) {
   const { Icon, title } = module;
+  const imageUrl =
+    module.id === 'module5'
+      ? 'https://i.imgur.com/QgeiXKW.png'
+      : `https://picsum.photos/seed/${module.id}/300/533`;
 
   return (
     <Link href={`/dashboard/module/${module.id}`} passHref>
       <Card className="group relative block h-[444px] w-[250px] overflow-hidden rounded-lg border-none bg-card shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
         <Image
-          src={`https://picsum.photos/seed/${module.id}/300/533`}
+          src={imageUrl}
           alt={title}
           fill
           className="object-cover transition-opacity duration-300 group-hover:opacity-75"
