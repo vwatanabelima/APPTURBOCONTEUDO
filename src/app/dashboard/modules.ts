@@ -30,7 +30,7 @@ export const modules: Module[] = [
   },
   {
     id: 'module4',
-    title: 'Exportação pronta para redes sociais',
+    title: 'MÓDULO 04 - Exportação para Redes Sociais',
     description: 'Exporte seu conteúdo no formato ideal para Instagram, Facebook, TikTok e mais.',
     Icon: Share2,
   },
