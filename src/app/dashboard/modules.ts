@@ -36,7 +36,7 @@ export const modules: Module[] = [
   },
   {
     id: 'module5',
-    title: 'Módulo Bônus',
+    title: 'MÓDULO 05 - Bônus Extras',
     description: 'Desbloqueie dicas e truques exclusivos para turbinar sua criação de conteúdo.',
     Icon: Gift,
   },
