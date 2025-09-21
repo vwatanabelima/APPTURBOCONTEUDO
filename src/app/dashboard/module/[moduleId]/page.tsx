@@ -1,8 +1,28 @@
 
 import { modules } from '@/app/dashboard/modules';
 import { StarRating } from '@/components/dashboard/StarRating';
-import { Comments } from '@/components/dashboard/Comments';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Download, Link as LinkIcon } from 'lucide-react';
+import Link from 'next/link';
+
+const complementaryMaterials = [
+  {
+    title: 'Guia de Conteúdo em PDF',
+    href: '#',
+    Icon: Download,
+  },
+  {
+    title: 'Ferramenta de IA recomendada',
+    href: '#',
+    Icon: LinkIcon,
+  },
+  {
+    title: 'Template para Redes Sociais',
+    href: '#',
+    Icon: Download,
+  },
+];
 
 export default function ModulePage({ params }: { params: { moduleId: string } }) {
   const module = modules.find((m) => m.id === params.moduleId);
@@ -19,25 +39,49 @@ export default function ModulePage({ params }: { params: { moduleId: string } })
           <p className="text-lg text-muted-foreground">{module.description}</p>
         </header>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Aula 1: Introdução ao Módulo</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="overflow-hidden rounded-lg border">
-                <div className="flex h-full min-h-[400px] items-center justify-center bg-muted">
-                  <p className="text-muted-foreground">Aqui vai o vídeo do Vimeo</p>
+        <div className="grid gap-8 lg:grid-cols-3">
+          <div className="space-y-8 lg:col-span-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Aula 1: Introdução ao Módulo</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="overflow-hidden rounded-lg border">
+                  <div className="flex h-full min-h-[400px] items-center justify-center bg-muted">
+                    <p className="text-muted-foreground">Aqui vai o vídeo do Vimeo</p>
+                  </div>
                 </div>
-            </div>
 
-            <div>
-              <h3 className="text-lg font-semibold">Avalie esta aula</h3>
-              <StarRating />
-            </div>
-
-            <Comments />
-          </CardContent>
-        </Card>
+                <div>
+                  <h3 className="text-lg font-semibold">Avalie esta aula</h3>
+                  <StarRating />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="space-y-8 lg:col-span-1">
+            <Card>
+              <CardHeader>
+                <CardTitle>Material Complementar</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {complementaryMaterials.map((material, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    className="w-full justify-start"
+                    asChild
+                  >
+                    <Link href={material.href}>
+                      <material.Icon className="mr-3" />
+                      {material.title}
+                    </Link>
+                  </Button>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     </div>
   );

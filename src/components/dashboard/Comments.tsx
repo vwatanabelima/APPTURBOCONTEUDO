@@ -16,10 +16,7 @@ type Comment = {
   date: string;
 };
 
-const initialComments: Comment[] = [
-    { id: 1, author: 'Carlos', avatar: '', initial: 'C', text: 'Ótima aula, muito bem explicada!', date: '2 dias atrás' },
-    { id: 2, author: 'Ana', avatar: '', initial: 'A', text: 'Gostei muito do conteúdo, parabéns!', date: '1 dia atrás' }
-];
+const initialComments: Comment[] = [];
 
 export function Comments() {
   const { user } = useAuth();
