@@ -34,6 +34,8 @@ export default function DashboardPage() {
         .finally(() => {
           setLoading(false);
         });
+    } else {
+        setLoading(false);
     }
   }, [user, toast]);
 
