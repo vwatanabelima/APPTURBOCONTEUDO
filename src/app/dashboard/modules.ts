@@ -40,7 +40,7 @@ export const modules: ModuleWithContent[] = [
     Icon: FilePenLine,
     complementaryMaterials: [
         {
-            title: "PDF do Módulo",
+            title: "ATHENA - A ASSISTENTE DE CRIAÇÃO DE CARROSSÉIS",
             href: "https://drive.google.com/file/d/1MBa9AlRKvyhrAXu1xmV_VYcVauxRykOl/view?usp=sharing",
             Icon: FileText
         }
