@@ -24,7 +24,7 @@ export const modules: Module[] = [
   },
   {
     id: 'module3',
-    title: 'Aplicação visual automática com template',
+    title: 'MÓDULO 03 - Aplicação Visual Automática',
     description: 'Transforme seu conteúdo em um design incrível usando nossos templates.',
     Icon: LayoutTemplate,
   },
