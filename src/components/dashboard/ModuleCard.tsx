@@ -1,6 +1,5 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 import type { Module } from '@/app/dashboard/modules';
 
 type ModuleCardProps = {
@@ -9,8 +8,8 @@ type ModuleCardProps = {
   onToggleComplete: (moduleId: string, completed: boolean) => void;
 };
 
-export function ModuleCard({ module, isCompleted, onToggleComplete }: ModuleCardProps) {
-  const { id, Icon, title, description } = module;
+export function ModuleCard({ module, isCompleted }: ModuleCardProps) {
+  const { Icon, title, description } = module;
 
   return (
     <Card className="flex flex-col justify-between transition-transform duration-300 hover:scale-105 hover:shadow-primary/20 hover:shadow-lg">
@@ -22,15 +21,9 @@ export function ModuleCard({ module, isCompleted, onToggleComplete }: ModuleCard
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter>
-        <div className="flex items-center space-x-2">
-          <Switch
-            id={`complete-${id}`}
-            checked={isCompleted}
-            onCheckedChange={(checked) => onToggleComplete(id, checked)}
-            aria-label={`Marcar ${title} como concluído`}
-          />
-          <Label htmlFor={`complete-${id}`}>Concluído</Label>
-        </div>
+        {isCompleted && (
+          <Badge variant="secondary" className="border-primary text-primary">Concluído</Badge>
+        )}
       </CardFooter>
     </Card>
   );

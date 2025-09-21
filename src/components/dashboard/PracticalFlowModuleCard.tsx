@@ -2,14 +2,14 @@
 
 import { useState, useTransition } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter, CardContent } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { getPracticalFlowPrompt } from '@/app/actions';
 import type { Module } from '@/app/dashboard/modules';
 import { Loader2 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+
 
 type PracticalFlowModuleCardProps = {
   module: Module;
@@ -18,7 +18,7 @@ type PracticalFlowModuleCardProps = {
 };
 
 export function PracticalFlowModuleCard({ module, isCompleted, onToggleComplete }: PracticalFlowModuleCardProps) {
-  const { id, Icon, title, description } = module;
+  const { Icon, title, description } = module;
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
   const [generatedPrompt, setGeneratedPrompt] = useState('');
@@ -30,6 +30,9 @@ export function PracticalFlowModuleCard({ module, isCompleted, onToggleComplete 
       if (result.success && result.prompt) {
         setGeneratedPrompt(result.prompt);
         setIsDialogOpen(true);
+        if (!isCompleted) {
+          onToggleComplete(module.id, true);
+        }
       } else {
         toast({
           title: 'Erro ao gerar prompt',
@@ -57,15 +60,9 @@ export function PracticalFlowModuleCard({ module, isCompleted, onToggleComplete 
           </Button>
         </CardContent>
         <CardFooter>
-          <div className="flex items-center space-x-2">
-            <Switch
-              id={`complete-${id}`}
-              checked={isCompleted}
-              onCheckedChange={(checked) => onToggleComplete(id, checked)}
-              aria-label={`Marcar ${title} como concluído`}
-            />
-            <Label htmlFor={`complete-${id}`}>Concluído</Label>
-          </div>
+          {isCompleted && (
+            <Badge variant="secondary" className="border-primary text-primary">Concluído</Badge>
+          )}
         </CardFooter>
       </Card>
 
