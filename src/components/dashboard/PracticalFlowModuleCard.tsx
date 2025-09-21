@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useTransition } from 'react';
@@ -9,7 +10,6 @@ import { getPracticalFlowPrompt } from '@/app/actions';
 import type { Module } from '@/app/dashboard/modules';
 import { Loader2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-
 
 type PracticalFlowModuleCardProps = {
   module: Module;
@@ -24,7 +24,10 @@ export function PracticalFlowModuleCard({ module, isCompleted, onToggleComplete 
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleGeneratePrompt = () => {
+  const handleGeneratePrompt = (e: React.MouseEvent) => {
+    e.preventDefault(); 
+    e.stopPropagation();
+
     startTransition(async () => {
       const result = await getPracticalFlowPrompt(title);
       if (result.success && result.prompt) {
@@ -45,7 +48,7 @@ export function PracticalFlowModuleCard({ module, isCompleted, onToggleComplete 
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <Card className="flex flex-col justify-between transition-transform duration-300 hover:scale-105 hover:shadow-primary/20 hover:shadow-lg">
+      <Card className="flex h-full flex-col justify-between transition-transform duration-300 hover:scale-105 hover:shadow-primary/20 hover:shadow-lg">
         <CardHeader>
           <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
             <Icon className="h-6 w-6 text-primary" />

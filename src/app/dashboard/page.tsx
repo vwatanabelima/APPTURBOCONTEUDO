@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -45,6 +46,7 @@ export default function DashboardPage() {
         await setModuleCompleted(user.uid, moduleId, completed);
         setProgress((prev) => ({
           ...prev,
+          ...(prev || {}),
           [moduleId]: completed,
         }));
         toast({
@@ -91,7 +93,6 @@ export default function DashboardPage() {
             key={module.id}
             module={module}
             isCompleted={isCompleted}
-            onToggleComplete={handleToggleComplete}
           />
         );
       })}
