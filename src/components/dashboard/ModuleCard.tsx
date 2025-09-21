@@ -17,6 +17,9 @@ export function ModuleCard({ module, isCompleted }: ModuleCardProps) {
   let imageUrl: string;
 
   switch (module.id) {
+    case 'module1':
+      imageUrl = 'https://i.imgur.com/7c5Y0zW.png';
+      break;
     case 'module2':
       imageUrl = 'https://i.imgur.com/eXXkI9v.png';
       break;
