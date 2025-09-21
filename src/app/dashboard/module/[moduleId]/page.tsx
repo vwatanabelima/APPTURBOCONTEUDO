@@ -8,7 +8,7 @@ import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Comments } from '@/components/dashboard/Comments';
 
-export default function ModulePage({ params }: { params: { moduleId: string } }) {
+export default async function ModulePage({ params }: { params: { moduleId: string } }) {
   const module = modules.find((m) => m.id === params.moduleId) as ModuleWithContent | undefined;
 
   if (!module) {
