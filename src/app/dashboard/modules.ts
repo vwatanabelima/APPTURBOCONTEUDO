@@ -1,6 +1,6 @@
 
 import type { LucideIcon } from 'lucide-react';
-import { BrainCircuit, FilePenLine, Gift, LayoutTemplate, Share2, Download } from 'lucide-react';
+import { BrainCircuit, FilePenLine, Gift, LayoutTemplate, Share2, Download, FileText } from 'lucide-react';
 
 export type ComplementaryMaterial = {
   title: string;
@@ -38,7 +38,13 @@ export const modules: ModuleWithContent[] = [
     title: 'MÓDULO 02 - Criação de Posts c/ I.A.',
     description: 'Gere posts completos para suas redes sociais com o poder da inteligência artificial.',
     Icon: FilePenLine,
-    complementaryMaterials: []
+    complementaryMaterials: [
+        {
+            title: "PDF do Módulo",
+            href: "https://drive.google.com/drive/u/1/folders/16E_vD8P74uV60TmsLesCWEIEXZazL0ad",
+            Icon: FileText
+        }
+    ]
   },
   {
     id: 'module3',
