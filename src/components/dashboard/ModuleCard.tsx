@@ -20,6 +20,9 @@ export function ModuleCard({ module, isCompleted }: ModuleCardProps) {
     case 'module2':
       imageUrl = 'https://i.imgur.com/rS08i1P.png';
       break;
+    case 'module3':
+      imageUrl = 'https://i.imgur.com/6v1kzRN.png';
+      break;
     case 'module4':
       imageUrl = 'https://i.imgur.com/DI41X2D.png';
       break;
