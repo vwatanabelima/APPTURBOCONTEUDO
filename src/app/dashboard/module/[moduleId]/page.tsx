@@ -4,11 +4,16 @@ import { modules } from '@/app/dashboard/modules';
 import { StarRating } from '@/components/dashboard/StarRating';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Download } from 'lucide-react';
 import Link from 'next/link';
 import { Comments } from '@/components/dashboard/Comments';
 
 const complementaryMaterials: any[] = [
+    {
+        title: "DOWNLOAD DO FIGMA DESKTOP",
+        href: "https://www.figma.com/pt-br/downloads/",
+        Icon: Download,
+    }
 ];
 
 export default function ModulePage({ params }: { params: { moduleId: string } }) {
@@ -68,7 +73,7 @@ export default function ModulePage({ params }: { params: { moduleId: string } })
                       className="w-full justify-start"
                       asChild
                     >
-                      <Link href={material.href}>
+                      <Link href={material.href} target="_blank">
                         <material.Icon className="mr-3" />
                         {material.title}
                       </Link>
