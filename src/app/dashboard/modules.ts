@@ -1,3 +1,4 @@
+
 import type { LucideIcon } from 'lucide-react';
 import { BrainCircuit, FilePenLine, Gift, LayoutTemplate, Share2 } from 'lucide-react';
 
@@ -17,7 +18,7 @@ export const modules: Module[] = [
   },
   {
     id: 'module2',
-    title: 'Criação de post com IA',
+    title: 'MÓDULO 02 - Criação de Posts c/ I.A.',
     description: 'Gere posts completos para suas redes sociais com o poder da inteligência artificial.',
     Icon: FilePenLine,
   },
