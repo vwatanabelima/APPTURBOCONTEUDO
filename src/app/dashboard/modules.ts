@@ -41,7 +41,7 @@ export const modules: ModuleWithContent[] = [
     complementaryMaterials: [
         {
             title: "PDF do Módulo",
-            href: "https://drive.google.com/drive/u/1/folders/16E_vD8P74uV60TmsLesCWEIEXZazL0ad",
+            href: "https://drive.google.com/file/d/1MBa9AlRKvyhrAXu1xmV_VYcVauxRykOl/view?usp=sharing",
             Icon: FileText
         }
     ]
