@@ -1,9 +1,10 @@
 
+
 import { modules } from '@/app/dashboard/modules';
 import { StarRating } from '@/components/dashboard/StarRating';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Download, Link as LinkIcon } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Comments } from '@/components/dashboard/Comments';
 
@@ -20,10 +21,19 @@ export default function ModulePage({ params }: { params: { moduleId: string } })
   return (
     <div className="container mx-auto max-w-4xl py-8">
       <div className="space-y-8">
-        <header className="space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight">{module.title}</h1>
-          <p className="text-lg text-muted-foreground">{module.description}</p>
-        </header>
+        <div>
+          <Button asChild variant="ghost" className="mb-4">
+            <Link href="/dashboard">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Voltar para o painel
+            </Link>
+          </Button>
+          <header className="space-y-2">
+            <h1 className="text-4xl font-bold tracking-tight">{module.title}</h1>
+            <p className="text-lg text-muted-foreground">{module.description}</p>
+          </header>
+        </div>
+
 
         <div className="grid gap-8">
           <div className="space-y-8">
