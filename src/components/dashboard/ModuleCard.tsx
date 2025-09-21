@@ -13,10 +13,20 @@ type ModuleCardProps = {
 
 export function ModuleCard({ module, isCompleted }: ModuleCardProps) {
   const { Icon, title } = module;
-  const imageUrl =
-    module.id === 'module5'
-      ? 'https://i.imgur.com/QgeiXKW.png'
-      : `https://picsum.photos/seed/${module.id}/300/533`;
+  
+  let imageUrl: string;
+
+  switch (module.id) {
+    case 'module4':
+      imageUrl = 'https://i.imgur.com/DI41X2D.png';
+      break;
+    case 'module5':
+      imageUrl = 'https://i.imgur.com/QgeiXKW.png';
+      break;
+    default:
+      imageUrl = `https://picsum.photos/seed/${module.id}/300/533`;
+      break;
+  }
 
   return (
     <Link href={`/dashboard/module/${module.id}`} passHref>
