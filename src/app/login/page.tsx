@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -121,12 +122,6 @@ export default function LoginPage() {
                 </Button>
               </form>
             </Form>
-            <div className="mt-4 text-center text-sm">
-              Não tem uma conta?{' '}
-              <Link href="/register" className="font-semibold text-primary hover:underline">
-                Registre-se
-              </Link>
-            </div>
           </CardContent>
         </Card>
       </div>
