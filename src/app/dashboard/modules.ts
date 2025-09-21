@@ -11,7 +11,7 @@ export type Module = {
 export const modules: Module[] = [
   {
     id: 'module1',
-    title: 'Fluxo prático: prompt + IA + ferramenta',
+    title: 'MÓDULO 01 - Fluxo Prático',
     description: 'Use nosso gerador de prompt para criar um fluxo de trabalho prático e eficiente.',
     Icon: BrainCircuit,
   },
