@@ -25,8 +25,8 @@ export default function ModulePage({ params }: { params: { moduleId: string } })
           <p className="text-lg text-muted-foreground">{module.description}</p>
         </header>
 
-        <div className="grid gap-8 lg:grid-cols-3">
-          <div className="space-y-8 lg:col-span-2">
+        <div className="grid gap-8">
+          <div className="space-y-8">
             <Card>
               <CardHeader>
                 <CardTitle>Aula 1: Introdução ao Módulo</CardTitle>
@@ -45,10 +45,6 @@ export default function ModulePage({ params }: { params: { moduleId: string } })
               </CardContent>
             </Card>
 
-            <Comments />
-
-          </div>
-          <div className="space-y-8 lg:col-span-1">
             <Card>
               <CardHeader>
                 <CardTitle>Material Complementar</CardTitle>
@@ -73,6 +69,9 @@ export default function ModulePage({ params }: { params: { moduleId: string } })
                 )}
               </CardContent>
             </Card>
+
+            <Comments />
+
           </div>
         </div>
       </div>
