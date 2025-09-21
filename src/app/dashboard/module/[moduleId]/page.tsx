@@ -1,23 +1,15 @@
 
 
-import { modules } from '@/app/dashboard/modules';
+import { modules, type ModuleWithContent } from '@/app/dashboard/modules';
 import { StarRating } from '@/components/dashboard/StarRating';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Download } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Comments } from '@/components/dashboard/Comments';
 
-const complementaryMaterials: any[] = [
-    {
-        title: "DOWNLOAD DO FIGMA DESKTOP",
-        href: "https://www.figma.com/pt-br/downloads/",
-        Icon: Download,
-    }
-];
-
 export default function ModulePage({ params }: { params: { moduleId: string } }) {
-  const module = modules.find((m) => m.id === params.moduleId);
+  const module = modules.find((m) => m.id === params.moduleId) as ModuleWithContent | undefined;
 
   if (!module) {
     return <div className="text-center">Módulo não encontrado.</div>;
@@ -60,30 +52,28 @@ export default function ModulePage({ params }: { params: { moduleId: string } })
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Material Complementar</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {complementaryMaterials.length > 0 ? (
-                  complementaryMaterials.map((material, index) => (
-                    <Button
-                      key={index}
-                      variant="outline"
-                      className="w-full justify-start"
-                      asChild
-                    >
-                      <Link href={material.href} target="_blank">
-                        <material.Icon className="mr-3" />
-                        {material.title}
-                      </Link>
-                    </Button>
-                  ))
-                ) : (
-                  <p className="text-sm text-muted-foreground">Nenhum material complementar para esta aula.</p>
-                )}
-              </CardContent>
-            </Card>
+            {module.complementaryMaterials && module.complementaryMaterials.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Material Complementar</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {module.complementaryMaterials.map((material, index) => (
+                      <Button
+                        key={index}
+                        variant="outline"
+                        className="w-full justify-start"
+                        asChild
+                      >
+                        <Link href={material.href} target="_blank">
+                          <material.Icon className="mr-3" />
+                          {material.title}
+                        </Link>
+                      </Button>
+                    ))}
+                </CardContent>
+              </Card>
+            )}
 
             <Comments />
 
