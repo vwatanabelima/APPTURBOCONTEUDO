@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'firebase/auth';
-import { LogOut } from 'lucide-react';
+import { LogOut, LifeBuoy } from 'lucide-react';
 
 import { auth } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
@@ -13,6 +13,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/context/auth-context';
@@ -63,6 +64,13 @@ export function Header() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end" forceMount>
+            <DropdownMenuItem asChild>
+              <Link href="/support">
+                <LifeBuoy className="mr-2 h-4 w-4" />
+                <span>Suporte</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="mr-2 h-4 w-4" />
               <span>Sair</span>
