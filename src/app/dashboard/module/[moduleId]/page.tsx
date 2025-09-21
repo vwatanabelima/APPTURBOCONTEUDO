@@ -5,23 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Download, Link as LinkIcon } from 'lucide-react';
 import Link from 'next/link';
+import { Comments } from '@/components/dashboard/Comments';
 
-const complementaryMaterials = [
-  {
-    title: 'Guia de Conteúdo em PDF',
-    href: '#',
-    Icon: Download,
-  },
-  {
-    title: 'Ferramenta de IA recomendada',
-    href: '#',
-    Icon: LinkIcon,
-  },
-  {
-    title: 'Template para Redes Sociais',
-    href: '#',
-    Icon: Download,
-  },
+const complementaryMaterials: any[] = [
 ];
 
 export default function ModulePage({ params }: { params: { moduleId: string } }) {
@@ -58,6 +44,9 @@ export default function ModulePage({ params }: { params: { moduleId: string } })
                 </div>
               </CardContent>
             </Card>
+
+            <Comments />
+
           </div>
           <div className="space-y-8 lg:col-span-1">
             <Card>
@@ -65,19 +54,23 @@ export default function ModulePage({ params }: { params: { moduleId: string } })
                 <CardTitle>Material Complementar</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {complementaryMaterials.map((material, index) => (
-                  <Button
-                    key={index}
-                    variant="outline"
-                    className="w-full justify-start"
-                    asChild
-                  >
-                    <Link href={material.href}>
-                      <material.Icon className="mr-3" />
-                      {material.title}
-                    </Link>
-                  </Button>
-                ))}
+                {complementaryMaterials.length > 0 ? (
+                  complementaryMaterials.map((material, index) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      className="w-full justify-start"
+                      asChild
+                    >
+                      <Link href={material.href}>
+                        <material.Icon className="mr-3" />
+                        {material.title}
+                      </Link>
+                    </Button>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground">Nenhum material complementar para esta aula.</p>
+                )}
               </CardContent>
             </Card>
           </div>

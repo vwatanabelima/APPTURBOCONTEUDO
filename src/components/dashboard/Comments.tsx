@@ -60,21 +60,27 @@ export function Comments() {
       </div>
 
       <div className="space-y-4">
-        {comments.map((comment) => (
-          <div key={comment.id} className="flex items-start gap-4">
-            <Avatar>
-              <AvatarImage src={comment.avatar} />
-              <AvatarFallback>{comment.initial}</AvatarFallback>
-            </Avatar>
-            <div className="flex-1 rounded-md bg-muted/50 p-3">
-              <div className="flex items-center justify-between">
-                <p className="font-semibold">{comment.author}</p>
-                <p className="text-xs text-muted-foreground">{comment.date}</p>
+        {comments.length > 0 ? (
+          comments.map((comment) => (
+            <div key={comment.id} className="flex items-start gap-4">
+              <Avatar>
+                <AvatarImage src={comment.avatar} />
+                <AvatarFallback>{comment.initial}</AvatarFallback>
+              </Avatar>
+              <div className="flex-1 rounded-md bg-muted/50 p-3">
+                <div className="flex items-center justify-between">
+                  <p className="font-semibold">{comment.author}</p>
+                  <p className="text-xs text-muted-foreground">{comment.date}</p>
+                </div>
+                <p className="mt-1 text-sm">{comment.text}</p>
               </div>
-              <p className="mt-1 text-sm">{comment.text}</p>
             </div>
+          ))
+        ) : (
+          <div className="text-center text-sm text-muted-foreground py-4">
+            Ainda não há comentários. Seja o primeiro a comentar!
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
