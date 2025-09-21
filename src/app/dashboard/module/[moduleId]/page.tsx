@@ -3,7 +3,6 @@ import { modules } from '@/app/dashboard/modules';
 import { StarRating } from '@/components/dashboard/StarRating';
 import { Comments } from '@/components/dashboard/Comments';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 export default function ModulePage({ params }: { params: { moduleId: string } }) {
   const module = modules.find((m) => m.id === params.moduleId);
@@ -26,11 +25,9 @@ export default function ModulePage({ params }: { params: { moduleId: string } })
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="overflow-hidden rounded-lg border">
-              <AspectRatio ratio={16 / 9}>
-                <div className="flex h-full items-center justify-center bg-muted">
+                <div className="flex h-full min-h-[400px] items-center justify-center bg-muted">
                   <p className="text-muted-foreground">Aqui vai o vídeo do Vimeo</p>
                 </div>
-              </AspectRatio>
             </div>
 
             <div>
