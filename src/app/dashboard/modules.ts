@@ -30,6 +30,11 @@ export const modules: ModuleWithContent[] = [
         title: "DOWNLOAD DO FIGMA DESKTOP",
         href: "https://www.figma.com/pt-br/downloads/",
         Icon: Download,
+      },
+      {
+        title: "PLUGIN TURBOCONTEÚDO",
+        href: "https://drive.google.com/file/d/10jmodtHqgEUnaT7ZPghqOoIn8igXP5pW/view?usp=sharing",
+        Icon: FileText,
       }
     ]
   },
