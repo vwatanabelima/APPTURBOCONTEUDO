@@ -52,9 +52,9 @@ export default function ModuleContent({ module }: ModuleContentProps) {
           </header>
         </div>
 
-        <div className="relative flex flex-col gap-12 lg:flex-row">
+        <div className="flex flex-col gap-12 lg:flex-row">
           {/* Main Content - Left Column */}
-          <div className="w-full lg:w-2/3">
+          <div className="w-full lg:w-2/3 lg:flex-shrink-0">
             <div className="space-y-8">
               <Card>
                 <CardHeader>
