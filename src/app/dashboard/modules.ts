@@ -71,6 +71,10 @@ export const modules: ModuleWithContent[] = [
     title: 'MÓDULO 03 - Aplicação Visual Automática',
     description: 'Aprenda a aplicar seu conteúdo em um template visual profissional com apenas alguns cliques, direto no Figma — sem precisar saber design.',
     Icon: LayoutTemplate,
+    lessons: [
+      { title: 'INSTALAÇÃO DE TEMPLATE E FONTES' },
+      { title: 'UTILIZAÇÃO DO PLUGIN NO FIGMA' }
+    ],
     complementaryMaterials: [
       {
         title: "FONTES E TEMPLATES",
