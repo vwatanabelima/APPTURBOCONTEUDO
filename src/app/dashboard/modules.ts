@@ -98,6 +98,16 @@ export const modules: ModuleWithContent[] = [
     title: 'MÓDULO 05 - Bônus Extras',
     description: 'Desbloqueie dicas e truques exclusivos para turbinar sua criação de conteúdo.',
     Icon: Gift,
-    complementaryMaterials: []
+    lessons: [
+      { title: 'FERRAMENTAS IA GRÁTIS E ÚTEIS' },
+      { title: 'PROMPT RAIZ - O CRIADOR DE PROMPTS' }
+    ],
+    complementaryMaterials: [
+      {
+        title: "CONHEÇA O PROMPT RAIZ",
+        href: "https://pay.kirvano.com/fe159d3f-1d41-4191-a129-9e79603e8392",
+        iconName: "FileText",
+      }
+    ]
   },
 ];
