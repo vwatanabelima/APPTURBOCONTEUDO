@@ -1,18 +1,19 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Card, CardFooter } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import type { Module } from '@/app/dashboard/modules';
-import { cn } from '@/lib/utils';
+import { Progress } from '@/components/ui/progress';
 
 type ModuleCardProps = {
   module: Module;
-  isCompleted: boolean;
+  progress: number;
 };
 
-export function ModuleCard({ module, isCompleted }: ModuleCardProps) {
+export function ModuleCard({ module, progress }: ModuleCardProps) {
   const { Icon, title } = module;
+  const isCompleted = progress === 100;
   
   let imageUrl: string;
 
@@ -58,12 +59,16 @@ export function ModuleCard({ module, isCompleted }: ModuleCardProps) {
         </div>
 
         {isCompleted && (
-           <CardFooter className="absolute top-2 right-2 p-0">
+           <div className="absolute top-2 right-2 p-0">
             <Badge variant="secondary" className="border-primary bg-primary/80 text-primary-foreground backdrop-blur-sm">
               Concluído
             </Badge>
-          </CardFooter>
+          </div>
         )}
+        
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <Progress value={progress} className="h-1 bg-white/20" />
+        </div>
       </Card>
     </Link>
   );

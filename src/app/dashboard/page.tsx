@@ -7,7 +7,7 @@ import { getUserProgress } from '@/lib/firestore';
 import { ModuleCard } from '@/components/dashboard/ModuleCard';
 import { modules } from './modules';
 import { useToast } from '@/hooks/use-toast';
-import type { UserProgress } from '@/types';
+import type { UserProgress, LessonProgress } from '@/types';
 import {
   Carousel,
   CarouselContent,
@@ -47,6 +47,18 @@ export default function DashboardPage() {
     }
   }, [user, toast]);
 
+  const getModuleProgress = (moduleId: string, lessonProgress: LessonProgress | undefined) => {
+    const module = modules.find(m => m.id === moduleId);
+    const totalLessons = module?.lessons?.length ?? 0;
+    if (totalLessons === 0) return 0;
+
+    const completedLessons = lessonProgress 
+      ? Object.values(lessonProgress).filter(p => p).length 
+      : 0;
+      
+    return (completedLessons / totalLessons) * 100;
+  };
+
   if (loading) {
     return (
       <div className="space-y-8">
@@ -73,11 +85,11 @@ export default function DashboardPage() {
       >
         <CarouselContent>
           {modules.map((module) => {
-            const isCompleted = progress ? !!progress[module.id] : false;
+            const moduleProgress = progress ? getModuleProgress(module.id, progress[module.id]) : 0;
             return (
               <CarouselItem key={module.id} className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5">
                 <div className="p-1">
-                  <ModuleCard module={module} isCompleted={isCompleted} />
+                  <ModuleCard module={module} progress={moduleProgress} />
                 </div>
               </CarouselItem>
             );

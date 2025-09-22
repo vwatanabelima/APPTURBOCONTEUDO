@@ -1,21 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
-import type { ModuleWithContent, Lesson, ComplementaryMaterial } from '@/app/dashboard/modules';
+import React, { useState, useEffect, useTransition } from 'react';
+import type { ModuleWithContent, Lesson } from '@/app/dashboard/modules';
 import { StarRating } from '@/components/dashboard/StarRating';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import { Comments } from '@/components/dashboard/Comments';
 import { cn } from '@/lib/utils';
 import * as LucideIcons from 'lucide-react';
+import { useAuth } from '@/context/auth-context';
+import { getUserProgress } from '@/lib/firestore';
+import type { LessonProgress } from '@/types';
+import { toggleLessonCompleted } from '@/app/actions';
+import { useToast } from '@/hooks/use-toast';
 
 type ModuleContentProps = {
-  module: Omit<ModuleWithContent, 'Icon' | 'lessons' | 'complementaryMaterials'> & {
-    lessons?: Lesson[];
-    complementaryMaterials?: (Omit<ComplementaryMaterial, 'iconName'> & { iconName: keyof typeof LucideIcons })[];
-  };
+  module: ModuleWithContent;
 };
 
 const DynamicIcon = ({ name, ...props }: { name: keyof typeof LucideIcons } & LucideIcons.LucideProps) => {
@@ -30,8 +32,42 @@ const DynamicIcon = ({ name, ...props }: { name: keyof typeof LucideIcons } & Lu
 
 
 export default function ModuleContent({ module }: ModuleContentProps) {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [isPending, startTransition] = useTransition();
+
   const initialLesson = module?.lessons?.[0] ?? { title: 'Introdução ao Módulo' };
   const [selectedLesson, setSelectedLesson] = useState<Lesson>(initialLesson);
+  const [lessonProgress, setLessonProgress] = useState<LessonProgress>({});
+
+  useEffect(() => {
+    if (user) {
+      getUserProgress(user.uid).then(progress => {
+        if (progress && progress[module.id]) {
+          setLessonProgress(progress[module.id]);
+        }
+      });
+    }
+  }, [user, module.id]);
+
+  const handleToggleComplete = (lessonTitle: string) => {
+    if (!user) return;
+    const currentStatus = !!lessonProgress[lessonTitle];
+    const newStatus = !currentStatus;
+
+    startTransition(async () => {
+      const result = await toggleLessonCompleted(user.uid, module.id, lessonTitle, newStatus);
+      if (result.success) {
+        setLessonProgress(prev => ({ ...prev, [lessonTitle]: newStatus }));
+      } else {
+        toast({
+          title: 'Erro',
+          description: 'Não foi possível atualizar seu progresso. Tente novamente.',
+          variant: 'destructive',
+        });
+      }
+    });
+  };
   
   const hasLessons = module.lessons && module.lessons.length > 0;
   const lessonList = hasLessons ? module.lessons : [initialLesson];
@@ -47,74 +83,88 @@ export default function ModuleContent({ module }: ModuleContentProps) {
         </Button>
       </div>
       
-      <div className="w-full">
-        <div className="space-y-8">
-          <header className="space-y-2">
-            <h1 className="text-4xl font-bold tracking-tight">{module.title}</h1>
-            <p className="text-lg text-muted-foreground">{module.description}</p>
-          </header>
+      <div className="space-y-8">
+        <header className="space-y-2">
+          <h1 className="text-4xl font-bold tracking-tight">{module.title}</h1>
+          <p className="text-lg text-muted-foreground">{module.description}</p>
+        </header>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>{selectedLesson.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="overflow-hidden rounded-lg border">
-                <div className="flex h-full min-h-[450px] items-center justify-center bg-muted">
-                  <p className="text-muted-foreground">Aqui vai o vídeo do Vimeo</p>
-                </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>{selectedLesson.title}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="overflow-hidden rounded-lg border">
+              <div className="flex h-full min-h-[450px] items-center justify-center bg-muted">
+                <p className="text-muted-foreground">Aqui vai o vídeo do Vimeo</p>
               </div>
-              <div>
-                <h3 className="text-lg font-semibold">Avalie esta aula</h3>
-                <StarRating />
-              </div>
-            </CardContent>
-          </Card>
-
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold">Avalie esta aula</h3>
+              <StarRating />
+            </div>
+          </CardContent>
+        </Card>
+        
+        {hasLessons && (
           <Card>
             <CardHeader>
               <CardTitle>Aulas do Módulo</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              {lessonList.map((lesson, index) => (
+              {lessonList.map((lesson, index) => {
+                const isCompleted = !!lessonProgress[lesson.title];
+                return (
+                  <div key={index} className="flex items-center gap-2">
+                    <Button
+                      variant={selectedLesson.title === lesson.title ? 'secondary' : 'ghost'}
+                      className={cn('w-full justify-start text-left h-auto py-3')}
+                      onClick={() => setSelectedLesson(lesson)}
+                    >
+                      <CheckCircle2 className={cn("mr-3 h-5 w-5 flex-shrink-0", isCompleted ? "text-primary" : "text-muted-foreground")} />
+                      <span className="flex-1">{lesson.title}</span>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleToggleComplete(lesson.title)}
+                      disabled={isPending}
+                      aria-label={isCompleted ? 'Marcar como incompleta' : 'Marcar como completa'}
+                      className="shrink-0"
+                    >
+                      <CheckCircle className={cn('h-5 w-5', isCompleted ? 'text-primary fill-primary/20' : 'text-muted-foreground')} />
+                    </Button>
+                  </div>
+                );
+              })}
+            </CardContent>
+          </Card>
+        )}
+
+        {module.complementaryMaterials && module.complementaryMaterials.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Material Complementar</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {module.complementaryMaterials.map((material, index) => (
                 <Button
                   key={index}
-                  variant={selectedLesson.title === lesson.title ? 'secondary' : 'ghost'}
-                  className={cn('w-full justify-start text-left h-auto py-3')}
-                  onClick={() => setSelectedLesson(lesson)}
+                  variant="outline"
+                  className="w-full justify-start"
+                  asChild
                 >
-                  <CheckCircle2 className={cn("mr-3 h-5 w-5 flex-shrink-0", selectedLesson.title === lesson.title ? "text-primary" : "text-muted-foreground")} />
-                  <span className="flex-1">{lesson.title}</span>
+                  <Link href={material.href} target="_blank">
+                    <DynamicIcon name={material.iconName} className="mr-3" />
+                    {material.title}
+                  </Link>
                 </Button>
               ))}
             </CardContent>
           </Card>
+        )}
 
-          {module.complementaryMaterials && module.complementaryMaterials.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Material Complementar</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {module.complementaryMaterials.map((material, index) => (
-                  <Button
-                    key={index}
-                    variant="outline"
-                    className="w-full justify-start"
-                    asChild
-                  >
-                    <Link href={material.href} target="_blank">
-                      <DynamicIcon name={material.iconName} className="mr-3" />
-                      {material.title}
-                    </Link>
-                  </Button>
-                ))}
-              </CardContent>
-            </Card>
-          )}
-
-          <Comments />
-        </div>
+        <Comments />
       </div>
     </div>
   );

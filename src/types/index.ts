@@ -1,3 +1,7 @@
+export type LessonProgress = {
+  [lessonTitle: string]: boolean;
+};
+
 export type UserProgress = {
-  [moduleId: string]: boolean;
+  [moduleId: string]: LessonProgress;
 };
