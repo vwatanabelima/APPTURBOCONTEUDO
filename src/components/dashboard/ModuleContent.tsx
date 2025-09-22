@@ -14,7 +14,7 @@ import * as LucideIcons from 'lucide-react';
 type ModuleContentProps = {
   module: Omit<ModuleWithContent, 'Icon' | 'lessons' | 'complementaryMaterials'> & {
     lessons?: Lesson[];
-    complementaryMaterials?: (Omit<ComplementaryMaterial, 'Icon'> & { iconName: keyof typeof LucideIcons })[];
+    complementaryMaterials?: (Omit<ComplementaryMaterial, 'iconName'> & { iconName: keyof typeof LucideIcons })[];
   };
 };
 
@@ -97,7 +97,7 @@ export default function ModuleContent({ module }: ModuleContentProps) {
             <Comments />
           </div>
 
-          <div className="lg:col-span-1">
+          <aside className="lg:col-span-1">
             <div className="sticky top-24 space-y-4">
                  <Card>
                     <CardHeader>
@@ -120,7 +120,7 @@ export default function ModuleContent({ module }: ModuleContentProps) {
                     </CardContent>
                 </Card>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
     </div>
