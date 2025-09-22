@@ -63,6 +63,11 @@ export const modules: ModuleWithContent[] = [
             title: "ATHENA - A ASSISTENTE DE CRIAÇÃO DE CARROSSÉIS",
             href: "https://drive.google.com/file/d/1MBa9AlRKvyhrAXu1xmV_VYcVauxRykOl/view?usp=sharing",
             iconName: "FileText"
+        },
+        {
+            title: "ESTAGIÁRIA - Prompt de Formatação Carrossel",
+            href: "https://drive.google.com/file/d/1RirgnQflG5Hr51yGENMOWa1lTF2r1Vyg/view?usp=sharing",
+            iconName: "FileText"
         }
     ]
   },
