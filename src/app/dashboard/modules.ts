@@ -88,6 +88,9 @@ export const modules: ModuleWithContent[] = [
     title: 'MÓDULO 04 - Exportação para Redes Sociais',
     description: 'Agora é só exportar seu conteúdo visual no formato certo para Instagram, LinkedIn ou onde quiser postar — pronto para publicar com consistência.',
     Icon: Share2,
+    lessons: [
+      { title: 'EDITAR E EXPORTAR O CONTEÚDO' }
+    ],
     complementaryMaterials: []
   },
   {
