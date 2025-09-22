@@ -37,95 +37,94 @@ export default function ModuleContent({ module }: ModuleContentProps) {
   const lessonList = hasLessons ? module.lessons : [initialLesson];
 
   return (
-    <div className="container mx-auto max-w-7xl py-8">
-      <div className="space-y-8">
-        <div>
-          <Button asChild variant="ghost" className="mb-4">
-            <Link href="/dashboard">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Voltar para o painel
-            </Link>
-          </Button>
-          <header className="space-y-2">
-            <h1 className="text-4xl font-bold tracking-tight">{module.title}</h1>
-            <p className="text-lg text-muted-foreground">{module.description}</p>
-          </header>
-        </div>
+    <div className="container mx-auto max-w-7xl px-4 py-8">
+      <div className="mb-4">
+        <Button asChild variant="ghost">
+          <Link href="/dashboard">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Voltar para o painel
+          </Link>
+        </Button>
+      </div>
+      
+      <div className="flex flex-col gap-12 lg:flex-row">
+        {/* Main Content - Left Column */}
+        <div className="w-full lg:w-2/3">
+          <div className="space-y-8">
+            <header className="space-y-2">
+              <h1 className="text-4xl font-bold tracking-tight">{module.title}</h1>
+              <p className="text-lg text-muted-foreground">{module.description}</p>
+            </header>
 
-        <div className="flex flex-col gap-12 lg:flex-row">
-          {/* Main Content - Left Column */}
-          <div className="w-full lg:w-2/3 lg:flex-shrink-0">
-            <div className="space-y-8">
+            <Card>
+              <CardHeader>
+                <CardTitle>{selectedLesson.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="overflow-hidden rounded-lg border">
+                  <div className="flex h-full min-h-[450px] items-center justify-center bg-muted">
+                    <p className="text-muted-foreground">Aqui vai o vídeo do Vimeo</p>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">Avalie esta aula</h3>
+                  <StarRating />
+                </div>
+              </CardContent>
+            </Card>
+
+            {module.complementaryMaterials && module.complementaryMaterials.length > 0 && (
               <Card>
                 <CardHeader>
-                  <CardTitle>{selectedLesson.title}</CardTitle>
+                  <CardTitle>Material Complementar</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="overflow-hidden rounded-lg border">
-                    <div className="flex h-full min-h-[450px] items-center justify-center bg-muted">
-                      <p className="text-muted-foreground">Aqui vai o vídeo do Vimeo</p>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold">Avalie esta aula</h3>
-                    <StarRating />
-                  </div>
+                <CardContent className="space-y-3">
+                  {module.complementaryMaterials.map((material, index) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      className="w-full justify-start"
+                      asChild
+                    >
+                      <Link href={material.href} target="_blank">
+                        <DynamicIcon name={material.iconName} className="mr-3" />
+                        {material.title}
+                      </Link>
+                    </Button>
+                  ))}
                 </CardContent>
               </Card>
+            )}
 
-              {module.complementaryMaterials && module.complementaryMaterials.length > 0 && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Material Complementar</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    {module.complementaryMaterials.map((material, index) => (
-                      <Button
-                        key={index}
-                        variant="outline"
-                        className="w-full justify-start"
-                        asChild
-                      >
-                        <Link href={material.href} target="_blank">
-                          <DynamicIcon name={material.iconName} className="mr-3" />
-                          {material.title}
-                        </Link>
-                      </Button>
-                    ))}
-                  </CardContent>
-                </Card>
-              )}
-
-              <Comments />
-            </div>
+            <Comments />
           </div>
-
-          {/* Sidebar - Right Column */}
-          <aside className="w-full lg:w-1/3">
-            <div className="sticky top-24 space-y-4">
-                 <Card>
-                    <CardHeader>
-                        <CardTitle>Aulas do Módulo</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                        {lessonList.map((lesson, index) => (
-                        <Button
-                            key={index}
-                            variant={selectedLesson.title === lesson.title ? 'secondary' : 'ghost'}
-                            className={cn(
-                            'w-full justify-start text-left h-auto py-3',
-                            )}
-                            onClick={() => setSelectedLesson(lesson)}
-                        >
-                            <CheckCircle2 className={cn("mr-3 h-5 w-5 flex-shrink-0", selectedLesson.title === lesson.title ? "text-primary" : "text-muted-foreground")} />
-                            <span className="flex-1">{lesson.title}</span>
-                        </Button>
-                        ))}
-                    </CardContent>
-                </Card>
-            </div>
-          </aside>
         </div>
+
+        {/* Sidebar - Right Column */}
+        <aside className="w-full lg:w-1/3">
+          <div className="sticky top-24 space-y-4">
+               <Card>
+                  <CardHeader>
+                      <CardTitle>Aulas do Módulo</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                      {lessonList.map((lesson, index) => (
+                      <Button
+                          key={index}
+                          variant={selectedLesson.title === lesson.title ? 'secondary' : 'ghost'}
+                          className={cn(
+                          'w-full justify-start text-left h-auto py-3',
+                          )}
+                          onClick={() => setSelectedLesson(lesson)}
+                      >
+                          <CheckCircle2 className={cn("mr-3 h-5 w-5 flex-shrink-0", selectedLesson.title === lesson.title ? "text-primary" : "text-muted-foreground")} />
+                          <span className="flex-1">{lesson.title}</span>
+                      </Button>
+                      ))}
+                  </CardContent>
+              </Card>
+          </div>
+        </aside>
       </div>
     </div>
   );
