@@ -23,7 +23,7 @@ export const modules: ModuleWithContent[] = [
   {
     id: 'module1',
     title: 'MÓDULO 01 - Fluxo Prático',
-    description: 'Use nosso gerador de prompt para criar um fluxo de trabalho prático e eficiente.',
+    description: 'Aqui você aprende o passo a passo para transformar uma ideia simples em conteúdo visual, usando IA e uma ferramenta automática — sem complicação, sem precisar saber design.\n\nIdeal pra quem tem pouco tempo e quer começar a postar ainda hoje, com consistência e praticidade.',
     Icon: BrainCircuit,
     complementaryMaterials: [
       {
