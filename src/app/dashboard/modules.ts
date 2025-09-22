@@ -1,11 +1,11 @@
 
 import type { LucideIcon } from 'lucide-react';
-import { BrainCircuit, FilePenLine, Gift, LayoutTemplate, Share2, Download, FileText } from 'lucide-react';
+import { BrainCircuit, FilePenLine, Gift, LayoutTemplate, Share2, Download, FileText, type LucideProps } from 'lucide-react';
 
 export type ComplementaryMaterial = {
   title: string;
   href: string;
-  Icon: LucideIcon;
+  iconName: keyof typeof import('lucide-react');
 };
 
 export type Lesson = {
@@ -35,12 +35,12 @@ export const modules: ModuleWithContent[] = [
       {
         title: "DOWNLOAD DO FIGMA DESKTOP",
         href: "https://www.figma.com/pt-br/downloads/",
-        Icon: Download,
+        iconName: "Download",
       },
       {
         title: "PLUGIN TURBOCONTEÚDO",
         href: "https://drive.google.com/file/d/10jmodtHqgEUnaT7ZPghqOoIn8igXP5pW/view?usp=sharing",
-        Icon: FileText,
+        iconName: "FileText",
       }
     ]
   },
@@ -57,7 +57,7 @@ export const modules: ModuleWithContent[] = [
         {
             title: "ATHENA - A ASSISTENTE DE CRIAÇÃO DE CARROSSÉIS",
             href: "https://drive.google.com/file/d/1MBa9AlRKvyhrAXu1xmV_VYcVauxRykOl/view?usp=sharing",
-            Icon: FileText
+            iconName: "FileText"
         }
     ]
   },
@@ -70,7 +70,7 @@ export const modules: ModuleWithContent[] = [
       {
         title: "FONTES E TEMPLATES",
         href: "https://drive.google.com/file/d/1DzEHfvWH7o77UyjTTJdi48PhkK2PtWjI/view?usp=sharing",
-        Icon: FileText,
+        iconName: "FileText",
       }
     ]
   },

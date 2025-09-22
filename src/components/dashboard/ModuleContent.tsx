@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import type { ModuleWithContent, Lesson } from '@/app/dashboard/modules';
 import { StarRating } from '@/components/dashboard/StarRating';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,10 +9,22 @@ import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import { Comments } from '@/components/dashboard/Comments';
 import { cn } from '@/lib/utils';
+import * as LucideIcons from 'lucide-react';
 
 type ModuleContentProps = {
   module: Omit<ModuleWithContent, 'Icon'>;
 };
+
+const DynamicIcon = ({ name, ...props }: { name: keyof typeof LucideIcons } & LucideIcons.LucideProps) => {
+  const Icon = LucideIcons[name];
+
+  if (!Icon) {
+    return null;
+  }
+
+  return <Icon {...props} />;
+};
+
 
 export default function ModuleContent({ module }: ModuleContentProps) {
   const initialLesson = module?.lessons?.[0] ?? { title: 'Introdução ao Módulo' };
@@ -70,8 +82,7 @@ export default function ModuleContent({ module }: ModuleContentProps) {
                       asChild
                     >
                       <Link href={material.href} target="_blank">
-                        {/* A renderização do ícone é feita aqui no cliente */}
-                        <material.Icon className="mr-3" />
+                        <DynamicIcon name={material.iconName} className="mr-3" />
                         {material.title}
                       </Link>
                     </Button>
