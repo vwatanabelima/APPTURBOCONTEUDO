@@ -16,6 +16,9 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Lock } from 'lucide-react';
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -75,28 +78,48 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="container mx-auto p-4 sm:p-6 lg:p-8 space-y-6 fade-in">
-       <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">Módulos Disponíveis</h2>
-       <Carousel
-        opts={{
-          align: 'start',
-          dragFree: true,
-        }}
-        className="w-full"
-      >
-        <CarouselContent className="-ml-2">
-          {modules.map((module) => {
-            const moduleProgress = progress ? getModuleProgress(module.id, progress[module.id]) : 0;
-            return (
-              <CarouselItem key={module.id} className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 pl-4">
-                <ModuleCard module={module} progress={moduleProgress} />
-              </CarouselItem>
-            );
-          })}
-        </CarouselContent>
-        <CarouselPrevious className="hidden sm:flex" />
-        <CarouselNext className="hidden sm:flex" />
-      </Carousel>
+    <div className="container mx-auto p-4 sm:p-6 lg:p-8 space-y-12">
+      <div className="space-y-6 fade-in">
+         <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">Módulos Disponíveis</h2>
+         <Carousel
+          opts={{
+            align: 'start',
+            dragFree: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-2">
+            {modules.map((module) => {
+              const moduleProgress = progress ? getModuleProgress(module.id, progress[module.id]) : 0;
+              return (
+                <CarouselItem key={module.id} className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 pl-4">
+                  <ModuleCard module={module} progress={moduleProgress} />
+                </CarouselItem>
+              );
+            })}
+          </CarouselContent>
+          <CarouselPrevious className="hidden sm:flex" />
+          <CarouselNext className="hidden sm:flex" />
+        </Carousel>
+      </div>
+
+      <div className="space-y-6 fade-in">
+        <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">Você também pode gostar de:</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <Card className="relative group flex h-[444px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-muted-foreground/50 bg-card/50 p-6 text-center shadow-none">
+            <div className="absolute top-2 right-2">
+              <Badge variant="outline" className="border-yellow-400/50 text-yellow-400">Em Breve</Badge>
+            </div>
+            <div className="mb-4 rounded-full bg-muted/80 p-4">
+              <Lock className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <h3 className="text-lg font-bold text-card-foreground">PROMPT Raiz - O criador de prompts e assistentes</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Desbloqueie o poder de criar seus próprios prompts e assistentes de IA personalizados.
+            </p>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }
