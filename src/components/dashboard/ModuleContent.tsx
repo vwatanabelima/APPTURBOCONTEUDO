@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useTransition } from 'react';
-import type { ModuleWithContent, Lesson } from '@/app/dashboard/modules';
+import type { ModuleWithContent, Lesson, ComplementaryMaterial } from '@/app/dashboard/modules';
 import { StarRating } from '@/components/dashboard/StarRating';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,39 +16,39 @@ import type { LessonProgress } from '@/types';
 import { toggleLessonCompleted } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 
-type ModuleContentProps = {
-  module: ModuleWithContent;
-};
+type ModuleContentProps = Omit<ModuleWithContent, 'Icon'>;
+
 
 const DynamicIcon = ({ name, ...props }: { name: keyof typeof LucideIcons } & LucideIcons.LucideProps) => {
   const Icon = LucideIcons[name];
 
   if (!Icon) {
-    return null;
+    // Retorna um ícone padrão ou nulo se o ícone não for encontrado
+    return <LucideIcons.File className="mr-3" />;
   }
 
   return <Icon {...props} />;
 };
 
 
-export default function ModuleContent({ module }: ModuleContentProps) {
+export default function ModuleContent({ id, title, description, lessons, complementaryMaterials }: ModuleContentProps) {
   const { user } = useAuth();
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
-  const initialLesson = module?.lessons?.[0] ?? { title: 'Introdução ao Módulo' };
+  const initialLesson = lessons?.[0] ?? { title: 'Introdução ao Módulo' };
   const [selectedLesson, setSelectedLesson] = useState<Lesson>(initialLesson);
   const [lessonProgress, setLessonProgress] = useState<LessonProgress>({});
 
   useEffect(() => {
     if (user) {
       getUserProgress(user.uid).then(progress => {
-        if (progress && progress[module.id]) {
-          setLessonProgress(progress[module.id]);
+        if (progress && progress[id]) {
+          setLessonProgress(progress[id]);
         }
       });
     }
-  }, [user, module.id]);
+  }, [user, id]);
 
   const handleToggleComplete = (lessonTitle: string) => {
     if (!user) return;
@@ -56,7 +56,7 @@ export default function ModuleContent({ module }: ModuleContentProps) {
     const newStatus = !currentStatus;
 
     startTransition(async () => {
-      const result = await toggleLessonCompleted(user.uid, module.id, lessonTitle, newStatus);
+      const result = await toggleLessonCompleted(user.uid, id, lessonTitle, newStatus);
       if (result.success) {
         setLessonProgress(prev => ({ ...prev, [lessonTitle]: newStatus }));
       } else {
@@ -69,8 +69,8 @@ export default function ModuleContent({ module }: ModuleContentProps) {
     });
   };
   
-  const hasLessons = module.lessons && module.lessons.length > 0;
-  const lessonList = hasLessons ? module.lessons : [initialLesson];
+  const hasLessons = lessons && lessons.length > 0;
+  const lessonList = hasLessons ? lessons : [initialLesson];
 
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
@@ -85,8 +85,8 @@ export default function ModuleContent({ module }: ModuleContentProps) {
       
       <div className="space-y-8">
         <header className="space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight">{module.title}</h1>
-          <p className="text-lg text-muted-foreground">{module.description}</p>
+          <h1 className="text-4xl font-bold tracking-tight">{title}</h1>
+          <p className="text-lg text-muted-foreground">{description}</p>
         </header>
 
         <Card>
@@ -141,13 +141,13 @@ export default function ModuleContent({ module }: ModuleContentProps) {
           </Card>
         )}
 
-        {module.complementaryMaterials && module.complementaryMaterials.length > 0 && (
+        {complementaryMaterials && complementaryMaterials.length > 0 && (
           <Card>
             <CardHeader>
               <CardTitle>Material Complementar</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {module.complementaryMaterials.map((material, index) => (
+              {complementaryMaterials.map((material, index) => (
                 <Button
                   key={index}
                   variant="outline"

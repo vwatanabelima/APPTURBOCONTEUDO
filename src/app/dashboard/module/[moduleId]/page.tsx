@@ -1,12 +1,16 @@
 import { modules, type ModuleWithContent } from '@/app/dashboard/modules';
 import ModuleContent from '@/components/dashboard/ModuleContent';
+import { notFound } from 'next/navigation';
 
 export default function ModulePage({ params }: { params: { moduleId: string } }) {
-  const module = modules.find((m) => m.id === params.moduleId) as ModuleWithCƒontent | undefined;
+  const module = modules.find((m) => m.id === params.moduleId) as ModuleWithContent | undefined;
 
   if (!module) {
-    return <div className="text-center">Módulo não encontrado.</div>;
+    notFound();
   }
 
-  return <ModuleContent module={module} />;
+  // Desestruturamos o objeto para não passar o componente Icon
+  const { Icon, ...moduleProps } = module;
+
+  return <ModuleContent {...moduleProps} />;
 }
