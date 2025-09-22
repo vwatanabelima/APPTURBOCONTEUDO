@@ -76,6 +76,7 @@ export function Header() {
       toast({
         title: 'Logout realizado',
         description: 'Você foi desconectado com sucesso.',
+        variant: 'success',
       });
       router.push('/login');
     } catch (error) {

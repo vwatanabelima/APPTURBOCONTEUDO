@@ -50,6 +50,7 @@ export default function LoginPage() {
       toast({
         title: 'Login bem-sucedido!',
         description: 'Redirecionando para o painel...',
+        variant: 'success',
       });
       router.push('/dashboard');
     } catch (error: any) {
