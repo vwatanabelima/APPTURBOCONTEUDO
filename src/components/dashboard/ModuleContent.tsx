@@ -71,6 +71,7 @@ export default function ModuleContent({ id, title, description, lessons, complem
   
   const hasLessons = lessons && lessons.length > 0;
   const lessonList = hasLessons ? lessons : [initialLesson];
+  const isLessonCompleted = !!lessonProgress[selectedLesson.title];
 
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
@@ -99,9 +100,21 @@ export default function ModuleContent({ id, title, description, lessons, complem
                 <p className="text-muted-foreground">Aqui vai o vídeo do Vimeo</p>
               </div>
             </div>
-            <div>
-              <h3 className="text-lg font-semibold">Avalie esta aula</h3>
-              <StarRating />
+            <div className="flex flex-wrap items-center justify-between gap-4 rounded-lg border p-4">
+              <div>
+                <h3 className="text-lg font-semibold">Avalie esta aula</h3>
+                <StarRating />
+              </div>
+              {hasLessons && (
+                <Button 
+                  onClick={() => handleToggleComplete(selectedLesson.title)}
+                  disabled={isPending}
+                  variant={isLessonCompleted ? "secondary" : "default"}
+                >
+                  <CheckCircle className="mr-2 h-4 w-4" />
+                  {isLessonCompleted ? 'Aula Concluída' : 'Concluir Aula'}
+                </Button>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -123,16 +136,6 @@ export default function ModuleContent({ id, title, description, lessons, complem
                     >
                       <CheckCircle2 className={cn("mr-3 h-5 w-5 flex-shrink-0", isCompleted ? "text-primary" : "text-muted-foreground")} />
                       <span className="flex-1">{lesson.title}</span>
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleToggleComplete(lesson.title)}
-                      disabled={isPending}
-                      aria-label={isCompleted ? 'Marcar como incompleta' : 'Marcar como completa'}
-                      className="shrink-0"
-                    >
-                      <CheckCircle className={cn('h-5 w-5', isCompleted ? 'text-primary fill-primary/20' : 'text-muted-foreground')} />
                     </Button>
                   </div>
                 );
