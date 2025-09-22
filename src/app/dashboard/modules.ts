@@ -8,6 +8,11 @@ export type ComplementaryMaterial = {
   Icon: LucideIcon;
 };
 
+export type Lesson = {
+  title: string;
+  videoUrl?: string;
+};
+
 export type Module = {
   id: string;
   title: string;
@@ -16,6 +21,7 @@ export type Module = {
 };
 
 export type ModuleWithContent = Module & {
+  lessons?: Lesson[];
   complementaryMaterials?: ComplementaryMaterial[];
 };
 
@@ -43,6 +49,10 @@ export const modules: ModuleWithContent[] = [
     title: 'MÓDULO 02 - Criação de Posts c/ I.A.',
     description: 'Descubra como usar prompts inteligentes para gerar textos prontos para redes sociais — mesmo que você esteja sem ideias ou com bloqueio criativo.',
     Icon: FilePenLine,
+    lessons: [
+      { title: 'PROMPT ATHENA PARA CRIAR CARROSÉIS VIRAIS' },
+      { title: 'PROMPT ESTAGIÁRIA PARA ORGANIZAR O CONTEÚDO NO FORMATO ADEQUADO' }
+    ],
     complementaryMaterials: [
         {
             title: "ATHENA - A ASSISTENTE DE CRIAÇÃO DE CARROSSÉIS",

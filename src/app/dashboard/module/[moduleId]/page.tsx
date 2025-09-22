@@ -7,13 +7,21 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Comments } from '@/components/dashboard/Comments';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 
-export default async function ModulePage({ params }: { params: { moduleId: string } }) {
+export default function ModulePage({ params }: { params: { moduleId: string } }) {
   const module = modules.find((m) => m.id === params.moduleId) as ModuleWithContent | undefined;
 
   if (!module) {
     return <div className="text-center">Módulo não encontrado.</div>;
   }
+
+  const hasLessons = module.lessons && module.lessons.length > 0;
 
   return (
     <div className="container mx-auto max-w-4xl py-8">
@@ -34,23 +42,52 @@ export default async function ModulePage({ params }: { params: { moduleId: strin
 
         <div className="grid gap-8">
           <div className="space-y-8">
-            <Card>
-              <CardHeader>
-                <CardTitle>Aula 1: Introdução ao Módulo</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="overflow-hidden rounded-lg border">
-                  <div className="flex h-full min-h-[400px] items-center justify-center bg-muted">
-                    <p className="text-muted-foreground">Aqui vai o vídeo do Vimeo</p>
+            {hasLessons ? (
+              <Accordion type="single" collapsible defaultValue="item-0" className="w-full">
+                {module.lessons?.map((lesson, index) => (
+                  <AccordionItem key={index} value={`item-${index}`}>
+                    <Card className="mb-4 overflow-hidden">
+                      <AccordionTrigger className="w-full">
+                        <CardHeader className="flex-row items-center justify-between p-6">
+                            <CardTitle className="text-left text-lg">Aula {index + 1}: {lesson.title}</CardTitle>
+                        </CardHeader>
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <CardContent className="space-y-6">
+                          <div className="overflow-hidden rounded-lg border">
+                            <div className="flex h-full min-h-[400px] items-center justify-center bg-muted">
+                              <p className="text-muted-foreground">Aqui vai o vídeo do Vimeo</p>
+                            </div>
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-semibold">Avalie esta aula</h3>
+                            <StarRating />
+                          </div>
+                        </CardContent>
+                      </AccordionContent>
+                    </Card>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            ) : (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Aula 1: Introdução ao Módulo</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="overflow-hidden rounded-lg border">
+                    <div className="flex h-full min-h-[400px] items-center justify-center bg-muted">
+                      <p className="text-muted-foreground">Aqui vai o vídeo do Vimeo</p>
+                    </div>
                   </div>
-                </div>
 
-                <div>
-                  <h3 className="text-lg font-semibold">Avalie esta aula</h3>
-                  <StarRating />
-                </div>
-              </CardContent>
-            </Card>
+                  <div>
+                    <h3 className="text-lg font-semibold">Avalie esta aula</h3>
+                    <StarRating />
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {module.complementaryMaterials && module.complementaryMaterials.length > 0 && (
               <Card>
