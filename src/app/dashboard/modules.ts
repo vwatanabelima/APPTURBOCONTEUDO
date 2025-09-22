@@ -36,7 +36,7 @@ export const modules: ModuleWithContent[] = [
   {
     id: 'module2',
     title: 'MÓDULO 02 - Criação de Posts c/ I.A.',
-    description: 'Gere posts completos para suas redes sociais com o poder da inteligência artificial.',
+    description: 'Descubra como usar prompts inteligentes para gerar textos prontos para redes sociais — mesmo que você esteja sem ideias ou com bloqueio criativo.',
     Icon: FilePenLine,
     complementaryMaterials: [
         {
