@@ -51,7 +51,7 @@
 
   /* Custom spinner styles for faster animation */
   .animate-spin {
-    animation: spin 0.6s linear infinite;
+    animation: spin 0.4s linear infinite;
   }
 
   @keyframes spin {
