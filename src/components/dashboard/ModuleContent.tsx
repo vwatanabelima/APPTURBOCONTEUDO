@@ -10,7 +10,11 @@ import Link from 'next/link';
 import { Comments } from '@/components/dashboard/Comments';
 import { cn } from '@/lib/utils';
 
-export default function ModuleContent({ module }: { module: ModuleWithContent }) {
+type ModuleContentProps = {
+  module: Omit<ModuleWithContent, 'Icon'>;
+};
+
+export default function ModuleContent({ module }: ModuleContentProps) {
   const initialLesson = module?.lessons?.[0] ?? { title: 'Introdução ao Módulo' };
   const [selectedLesson, setSelectedLesson] = useState<Lesson>(initialLesson);
   
@@ -66,6 +70,7 @@ export default function ModuleContent({ module }: { module: ModuleWithContent })
                       asChild
                     >
                       <Link href={material.href} target="_blank">
+                        {/* A renderização do ícone é feita aqui no cliente */}
                         <material.Icon className="mr-3" />
                         {material.title}
                       </Link>

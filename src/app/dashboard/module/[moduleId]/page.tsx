@@ -8,5 +8,8 @@ export default async function ModulePage({ params }: { params: { moduleId: strin
     return <div className="text-center">Módulo não encontrado.</div>;
   }
 
-  return <ModuleContent module={module} />;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { Icon, ...moduleWithoutIcon } = module;
+
+  return <ModuleContent module={moduleWithoutIcon} />;
 }
