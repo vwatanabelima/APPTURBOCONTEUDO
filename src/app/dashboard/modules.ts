@@ -31,6 +31,11 @@ export const modules: ModuleWithContent[] = [
     title: 'MÓDULO 01 - Fluxo Prático',
     description: 'Aqui você aprende o passo a passo para transformar uma ideia simples em conteúdo visual, usando IA e uma ferramenta automática — sem complicação, sem precisar saber design.\n\nIdeal pra quem tem pouco tempo e quer começar a postar ainda hoje, com consistência e praticidade.',
     Icon: BrainCircuit,
+    lessons: [
+      { title: 'Introdução' },
+      { title: 'Instalação do Figma Desktop' },
+      { title: 'Instalação do Plugin TURBOCONTEÚDO' }
+    ],
     complementaryMaterials: [
       {
         title: "DOWNLOAD DO FIGMA DESKTOP",
