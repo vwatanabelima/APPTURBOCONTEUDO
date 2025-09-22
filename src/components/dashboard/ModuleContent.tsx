@@ -59,6 +59,10 @@ export default function ModuleContent({ id, title, description, lessons, complem
       const result = await toggleLessonCompleted(user.uid, id, lessonTitle, newStatus);
       if (result.success) {
         setLessonProgress(prev => ({ ...prev, [lessonTitle]: newStatus }));
+        toast({
+          title: newStatus ? 'Aula concluída!' : 'Progresso desmarcado',
+          description: `A aula "${lessonTitle}" foi atualizada.`,
+        });
       } else {
         toast({
           title: 'Erro',
@@ -74,9 +78,9 @@ export default function ModuleContent({ id, title, description, lessons, complem
   const isLessonCompleted = !!lessonProgress[selectedLesson.title];
 
   return (
-    <div className="container mx-auto max-w-7xl px-4 py-8">
+    <div className="container mx-auto max-w-7xl px-4 py-6 sm:py-8">
       <div className="mb-4">
-        <Button asChild variant="ghost">
+        <Button asChild variant="ghost" className="pl-0">
           <Link href="/dashboard">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Voltar para o painel
@@ -86,7 +90,7 @@ export default function ModuleContent({ id, title, description, lessons, complem
       
       <div className="space-y-8">
         <header className="space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight">{title}</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">{title}</h1>
           <p className="text-lg text-muted-foreground">{description}</p>
         </header>
 
@@ -96,12 +100,12 @@ export default function ModuleContent({ id, title, description, lessons, complem
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="overflow-hidden rounded-lg border">
-              <div className="flex h-full min-h-[450px] items-center justify-center bg-muted">
+              <div className="flex h-full min-h-[250px] sm:min-h-[450px] items-center justify-center bg-muted">
                 <p className="text-muted-foreground">Aqui vai o vídeo do Vimeo</p>
               </div>
             </div>
-            <div className="flex flex-wrap items-center justify-between gap-4 rounded-lg border p-4">
-              <div>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-lg border p-4">
+              <div className="space-y-1">
                 <h3 className="text-lg font-semibold">Avalie esta aula</h3>
                 <StarRating />
               </div>
@@ -110,6 +114,7 @@ export default function ModuleContent({ id, title, description, lessons, complem
                   onClick={() => handleToggleComplete(selectedLesson.title)}
                   disabled={isPending}
                   variant={isLessonCompleted ? "secondary" : "default"}
+                  className="w-full sm:w-auto"
                 >
                   <CheckCircle className="mr-2 h-4 w-4" />
                   {isLessonCompleted ? 'Aula Concluída' : 'Concluir Aula'}
@@ -131,11 +136,11 @@ export default function ModuleContent({ id, title, description, lessons, complem
                   <div key={index} className="flex items-center gap-2">
                     <Button
                       variant={selectedLesson.title === lesson.title ? 'secondary' : 'ghost'}
-                      className={cn('w-full justify-start text-left h-auto py-3')}
+                      className={cn('w-full justify-start text-left h-auto py-3 px-3')}
                       onClick={() => setSelectedLesson(lesson)}
                     >
                       <CheckCircle2 className={cn("mr-3 h-5 w-5 flex-shrink-0", isCompleted ? "text-primary" : "text-muted-foreground")} />
-                      <span className="flex-1">{lesson.title}</span>
+                      <span className="flex-1 whitespace-normal">{lesson.title}</span>
                     </Button>
                   </div>
                 );
@@ -154,12 +159,12 @@ export default function ModuleContent({ id, title, description, lessons, complem
                 <Button
                   key={index}
                   variant="outline"
-                  className="w-full justify-start"
+                  className="w-full justify-start h-auto text-left"
                   asChild
                 >
-                  <Link href={material.href} target="_blank">
-                    <DynamicIcon name={material.iconName} className="mr-3" />
-                    {material.title}
+                  <Link href={material.href} target="_blank" className="flex items-center p-3">
+                    <DynamicIcon name={material.iconName} className="mr-3 h-5 w-5 flex-shrink-0" />
+                    <span className="flex-1 whitespace-normal">{material.title}</span>
                   </Link>
                 </Button>
               ))}

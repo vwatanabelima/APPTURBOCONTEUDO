@@ -61,8 +61,8 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="space-y-8">
-        <h2 className="text-2xl font-semibold tracking-tight">Módulos</h2>
+      <div className="container mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+        <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">Módulos</h2>
         <div className="flex space-x-4 overflow-x-auto p-1">
           {[...Array(3)].map((_, i) => (
             <div key={i} className="min-w-[280px] flex-shrink-0">
@@ -75,22 +75,21 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-8 fade-in">
-       <h2 className="text-2xl font-semibold tracking-tight">Módulos Disponíveis</h2>
+    <div className="container mx-auto p-4 sm:p-6 lg:p-8 space-y-6 fade-in">
+       <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">Módulos Disponíveis</h2>
        <Carousel
         opts={{
           align: 'start',
+          dragFree: true,
         }}
         className="w-full"
       >
-        <CarouselContent>
+        <CarouselContent className="-ml-2">
           {modules.map((module) => {
             const moduleProgress = progress ? getModuleProgress(module.id, progress[module.id]) : 0;
             return (
-              <CarouselItem key={module.id} className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5">
-                <div className="p-1">
-                  <ModuleCard module={module} progress={moduleProgress} />
-                </div>
+              <CarouselItem key={module.id} className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 pl-4">
+                <ModuleCard module={module} progress={moduleProgress} />
               </CarouselItem>
             );
           })}
