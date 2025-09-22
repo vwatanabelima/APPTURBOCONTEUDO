@@ -49,7 +49,7 @@ export const modules: ModuleWithContent[] = [
   {
     id: 'module3',
     title: 'MÓDULO 03 - Aplicação Visual Automática',
-    description: 'Transforme seu conteúdo em um design incrível usando nossos templates.',
+    description: 'Aprenda a aplicar seu conteúdo em um template visual profissional com apenas alguns cliques, direto no Figma — sem precisar saber design.',
     Icon: LayoutTemplate,
     complementaryMaterials: []
   },
