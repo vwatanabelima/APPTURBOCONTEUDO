@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import type { ModuleWithContent, Lesson } from '@/app/dashboard/modules';
+import type { ModuleWithContent, Lesson, ComplementaryMaterial } from '@/app/dashboard/modules';
 import { StarRating } from '@/components/dashboard/StarRating';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,7 +12,10 @@ import { cn } from '@/lib/utils';
 import * as LucideIcons from 'lucide-react';
 
 type ModuleContentProps = {
-  module: Omit<ModuleWithContent, 'Icon'>;
+  module: Omit<ModuleWithContent, 'Icon' | 'lessons' | 'complementaryMaterials'> & {
+    lessons?: Lesson[];
+    complementaryMaterials?: (Omit<ComplementaryMaterial, 'Icon'> & { iconName: keyof typeof LucideIcons })[];
+  };
 };
 
 const DynamicIcon = ({ name, ...props }: { name: keyof typeof LucideIcons } & LucideIcons.LucideProps) => {
@@ -49,7 +52,7 @@ export default function ModuleContent({ module }: ModuleContentProps) {
           </header>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-12">
           <div className="space-y-8 lg:col-span-2">
             <Card>
               <CardHeader>
@@ -94,27 +97,29 @@ export default function ModuleContent({ module }: ModuleContentProps) {
             <Comments />
           </div>
 
-          <div className="space-y-4 lg:col-span-1">
-            <Card>
-              <CardHeader>
-                <CardTitle>Aulas do Módulo</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                {lessonList.map((lesson, index) => (
-                  <Button
-                    key={index}
-                    variant={selectedLesson.title === lesson.title ? 'secondary' : 'ghost'}
-                    className={cn(
-                      'w-full justify-start text-left h-auto py-3',
-                    )}
-                    onClick={() => setSelectedLesson(lesson)}
-                  >
-                     <CheckCircle2 className={cn("mr-3 h-5 w-5 flex-shrink-0", selectedLesson.title === lesson.title ? "text-primary" : "text-muted-foreground")} />
-                    <span className="flex-1">{lesson.title}</span>
-                  </Button>
-                ))}
-              </CardContent>
-            </Card>
+          <div className="lg:col-span-1">
+            <div className="sticky top-24 space-y-4">
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Aulas do Módulo</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                        {lessonList.map((lesson, index) => (
+                        <Button
+                            key={index}
+                            variant={selectedLesson.title === lesson.title ? 'secondary' : 'ghost'}
+                            className={cn(
+                            'w-full justify-start text-left h-auto py-3',
+                            )}
+                            onClick={() => setSelectedLesson(lesson)}
+                        >
+                            <CheckCircle2 className={cn("mr-3 h-5 w-5 flex-shrink-0", selectedLesson.title === lesson.title ? "text-primary" : "text-muted-foreground")} />
+                            <span className="flex-1">{lesson.title}</span>
+                        </Button>
+                        ))}
+                    </CardContent>
+                </Card>
+            </div>
           </div>
         </div>
       </div>
