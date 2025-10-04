@@ -44,7 +44,7 @@ export const modules: ModuleWithContent[] = [
       },
       {
         title: "PLUGIN TURBOCONTEÚDO",
-        href: "https://drive.google.com/file/d/10jmodtHqgEUnaT7ZPghqOoIn8igXP5pW/view?usp=sharing",
+        href: "https://drive.google.com/file/d/178SAhvPEFacgA-IgPmDQgfIDTy9ah1KM/view?usp=sharing",
         iconName: "FileText",
       }
     ]
