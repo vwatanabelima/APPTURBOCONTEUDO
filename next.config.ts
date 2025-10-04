@@ -37,10 +37,15 @@ const nextConfig: NextConfig = {
     ],
   },
   devIndicators: {
+    // This is kept for older Next.js versions, but the top-level one is preferred.
     allowedDevOrigins: [
       'https://6000-firebase-studio-1758321501493.cluster-fsmcisrvfbb5cr5mvra3hr3qyg.cloudworkstations.dev',
     ],
   },
+  // This is the correct location for Next.js 14+
+  allowedDevOrigins: [
+    'https://6000-firebase-studio-1758321501493.cluster-fsmcisrvfbb5cr5mvra3hr3qyg.cloudworkstations.dev',
+  ],
 };
 
 export default nextConfig;
