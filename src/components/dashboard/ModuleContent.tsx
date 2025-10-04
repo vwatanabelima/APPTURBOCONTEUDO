@@ -62,6 +62,7 @@ export default function ModuleContent({ id, title, description, lessons, complem
         toast({
           title: newStatus ? 'Aula concluída!' : 'Progresso desmarcado',
           description: `A aula "${lessonTitle}" foi atualizada.`,
+          variant: 'success'
         });
       } else {
         toast({
@@ -126,8 +127,11 @@ export default function ModuleContent({ id, title, description, lessons, complem
                 <Button 
                   onClick={() => handleToggleComplete(selectedLesson.title)}
                   disabled={isPending}
-                  variant={isLessonCompleted ? "secondary" : "default"}
-                  className="w-full sm:w-auto"
+                  variant={isLessonCompleted ? 'default' : 'secondary'}
+                  className={cn(
+                    "w-full sm:w-auto",
+                    isLessonCompleted && "bg-primary text-primary-foreground hover:bg-primary/90"
+                  )}
                 >
                   <CheckCircle className="mr-2 h-4 w-4" />
                   {isLessonCompleted ? 'Aula Concluída' : 'Concluir Aula'}
