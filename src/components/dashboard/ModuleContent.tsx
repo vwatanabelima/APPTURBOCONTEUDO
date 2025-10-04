@@ -15,6 +15,7 @@ import { getUserProgress } from '@/lib/firestore';
 import type { LessonProgress } from '@/types';
 import { toggleLessonCompleted } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 type ModuleContentProps = Omit<ModuleWithContent, 'Icon'>;
 
@@ -23,7 +24,6 @@ const DynamicIcon = ({ name, ...props }: { name: keyof typeof LucideIcons } & Lu
   const Icon = LucideIcons[name];
 
   if (!Icon) {
-    // Retorna um ícone padrão ou nulo se o ícone não for encontrado
     return <LucideIcons.File className="mr-3" />;
   }
 
@@ -100,9 +100,22 @@ export default function ModuleContent({ id, title, description, lessons, complem
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="overflow-hidden rounded-lg border">
-              <div className="flex h-full min-h-[250px] sm:min-h-[450px] items-center justify-center bg-muted">
-                <p className="text-muted-foreground">Aqui vai o vídeo do Vimeo</p>
-              </div>
+               {selectedLesson.youtubeVideoId ? (
+                <AspectRatio ratio={16 / 9}>
+                  <iframe
+                    className="h-full w-full"
+                    src={`https://www.youtube.com/embed/${selectedLesson.youtubeVideoId}`}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </AspectRatio>
+              ) : (
+                <div className="flex h-full min-h-[250px] sm:min-h-[450px] items-center justify-center bg-muted">
+                  <p className="text-muted-foreground">Vídeo não disponível</p>
+                </div>
+              )}
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-lg border p-4">
               <div className="space-y-1">

@@ -11,6 +11,7 @@ export type ComplementaryMaterial = {
 export type Lesson = {
   title: string;
   videoUrl?: string;
+  youtubeVideoId?: string;
 };
 
 export type Module = {
@@ -32,8 +33,8 @@ export const modules: ModuleWithContent[] = [
     description: 'Aqui você aprende o passo a passo para transformar uma ideia simples em conteúdo visual, usando IA e uma ferramenta automática — sem complicação, sem precisar saber design.\n\nIdeal pra quem tem pouco tempo e quer começar a postar ainda hoje, com consistência e praticidade.',
     Icon: BrainCircuit,
     lessons: [
-      { title: 'Instalação do Figma Desktop' },
-      { title: 'Instalação do Plugin TURBOCONTEÚDO' }
+      { title: 'Instalação do Figma Desktop', youtubeVideoId: 'f6s8q3o4Tgg' },
+      { title: 'Instalação do Plugin TURBOCONTEÚDO', youtubeVideoId: 'LJH39t3Sg-w' }
     ],
     complementaryMaterials: [
       {
@@ -54,8 +55,8 @@ export const modules: ModuleWithContent[] = [
     description: 'Descubra como usar prompts inteligentes para gerar textos prontos para redes sociais — mesmo que você esteja sem ideias ou com bloqueio criativo.',
     Icon: FilePenLine,
     lessons: [
-      { title: 'PROMPT ATHENA PARA CRIAR CARROSÉIS VIRAIS' },
-      { title: 'PROMPT ESTAGIÁRIA PARA ORGANIZAR O CONTEÚDO NO FORMATO ADEQUADO' }
+      { title: 'PROMPT ATHENA PARA CRIAR CARROSÉIS VIRAIS', youtubeVideoId: 'dQw4w9WgXcQ' },
+      { title: 'PROMPT ESTAGIÁRIA PARA ORGANIZAR O CONTEÚDO NO FORMATO ADEQUADO', youtubeVideoId: 'dQw4w9WgXcQ' }
     ],
     complementaryMaterials: [
         {
@@ -76,8 +77,8 @@ export const modules: ModuleWithContent[] = [
     description: 'Aprenda a aplicar seu conteúdo em um template visual profissional com apenas alguns cliques, direto no Figma — sem precisar saber design.',
     Icon: LayoutTemplate,
     lessons: [
-      { title: 'INSTALAÇÃO DE TEMPLATE E FONTES' },
-      { title: 'UTILIZAÇÃO DO PLUGIN NO FIGMA' }
+      { title: 'INSTALAÇÃO DE TEMPLATE E FONTES', youtubeVideoId: 'dQw4w9WgXcQ' },
+      { title: 'UTILIZAÇÃO DO PLUGIN NO FIGMA', youtubeVideoId: 'dQw4w9WgXcQ' }
     ],
     complementaryMaterials: [
       {
@@ -93,7 +94,7 @@ export const modules: ModuleWithContent[] = [
     description: 'Agora é só exportar seu conteúdo visual no formato certo para Instagram, LinkedIn ou onde quiser postar — pronto para publicar com consistência.',
     Icon: Share2,
     lessons: [
-      { title: 'EDITAR E EXPORTAR O CONTEÚDO' }
+      { title: 'EDITAR E EXPORTAR O CONTEÚDO', youtubeVideoId: 'dQw4w9WgXcQ' }
     ],
     complementaryMaterials: []
   },
@@ -103,8 +104,8 @@ export const modules: ModuleWithContent[] = [
     description: 'Desbloqueie dicas e truques exclusivos para turbinar sua criação de conteúdo.',
     Icon: Gift,
     lessons: [
-      { title: 'FERRAMENTAS IA GRÁTIS E ÚTEIS' },
-      { title: 'PROMPT RAIZ - O CRIADOR DE PROMPTS' }
+      { title: 'FERRAMENTAS IA GRÁTIS E ÚTEIS', youtubeVideoId: 'dQw4w9WgXcQ' },
+      { title: 'PROMPT RAIZ - O CRIADOR DE PROMPTS', youtubeVideoId: 'dQw4w9WgXcQ' }
     ],
     complementaryMaterials: [
       {
