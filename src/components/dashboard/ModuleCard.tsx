@@ -39,8 +39,8 @@ export function ModuleCard({ module, progress }: ModuleCardProps) {
   }
 
   return (
-    <Link href={`/dashboard/module/${module.id}`} passHref>
-      <Card className="group relative block h-[444px] w-full overflow-hidden rounded-lg border-none bg-card shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
+    <Card asChild className="group relative block h-[444px] w-full overflow-hidden rounded-lg border-none bg-card shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
+      <Link href={`/dashboard/module/${module.id}`} passHref>
         <Image
           src={imageUrl}
           alt={title}
@@ -69,7 +69,7 @@ export function ModuleCard({ module, progress }: ModuleCardProps) {
         <div className="absolute bottom-0 left-0 right-0 p-4">
           <Progress value={progress} className="h-1 bg-white/20" />
         </div>
-      </Card>
-    </Link>
+      </Link>
+    </Card>
   );
 }
