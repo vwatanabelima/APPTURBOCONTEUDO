@@ -19,13 +19,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Lock } from 'lucide-react';
-import { unstable_preinit as preinit } from 'react-dom';
-
-preinit('https://www.youtube.com/embed/dQw4w9WgXcQ', { as: 'fetch', crossOrigin: 'anonymous' });
-preinit('https://www.youtube.com/embed/-AUnFq0vpMw', { as: 'fetch', crossOrigin: 'anonymous' });
-preinit('https://www.youtube.com/embed/vJddr8mM4LM', { as: 'fetch', crossOrigin: 'anonymous' });
-preinit('https://www.youtube.com/embed/9rrwH-LL6uo', { as: 'fetch', crossOrigin: 'anonymous' });
-preinit('https://www.youtube.com/embed/kGSwly3qLeA', { as: 'fetch', crossOrigin: 'anonymous' });
 
 export default function DashboardPage() {
   const { user } = useAuth();
