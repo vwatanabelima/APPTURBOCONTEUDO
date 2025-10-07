@@ -9,9 +9,10 @@ import { Progress } from '@/components/ui/progress';
 type ModuleCardProps = {
   module: Module;
   progress: number;
+  priority?: boolean;
 };
 
-export function ModuleCard({ module, progress }: ModuleCardProps) {
+export function ModuleCard({ module, progress, priority = false }: ModuleCardProps) {
   const { Icon, title } = module;
   const isCompleted = progress === 100;
   
@@ -48,6 +49,7 @@ export function ModuleCard({ module, progress }: ModuleCardProps) {
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
             className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-75"
             data-ai-hint="movie poster"
+            priority={priority}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 

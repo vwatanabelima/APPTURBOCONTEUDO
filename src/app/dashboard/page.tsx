@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import { useAuth } from '@/context/auth-context';
 import { getUserProgress } from '@/lib/firestore';
 import { ModuleCard } from '@/components/dashboard/ModuleCard';
@@ -19,6 +19,13 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Lock } from 'lucide-react';
+import { unstable_preinit as preinit } from 'react-dom';
+
+preinit('https://www.youtube.com/embed/dQw4w9WgXcQ', { as: 'fetch', crossOrigin: 'anonymous' });
+preinit('https://www.youtube.com/embed/-AUnFq0vpMw', { as: 'fetch', crossOrigin: 'anonymous' });
+preinit('https://www.youtube.com/embed/vJddr8mM4LM', { as: 'fetch', crossOrigin: 'anonymous' });
+preinit('https://www.youtube.com/embed/9rrwH-LL6uo', { as: 'fetch', crossOrigin: 'anonymous' });
+preinit('https://www.youtube.com/embed/kGSwly3qLeA', { as: 'fetch', crossOrigin: 'anonymous' });
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -89,11 +96,11 @@ export default function DashboardPage() {
           className="w-full"
         >
           <CarouselContent className="-ml-2">
-            {modules.map((module) => {
+            {modules.map((module, index) => {
               const moduleProgress = progress ? getModuleProgress(module.id, progress[module.id]) : 0;
               return (
                 <CarouselItem key={module.id} className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 pl-4">
-                  <ModuleCard module={module} progress={moduleProgress} />
+                  <ModuleCard module={module} progress={moduleProgress} priority={index < 3} />
                 </CarouselItem>
               );
             })}
