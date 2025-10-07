@@ -55,7 +55,7 @@ export const modules: ModuleWithContent[] = [
     description: 'Descubra como usar prompts inteligentes para gerar textos prontos para redes sociais — mesmo que você esteja sem ideias ou com bloqueio criativo.',
     Icon: FilePenLine,
     lessons: [
-      { title: 'PROMPT ATHENA PARA CRIAR CARROSÉIS VIRAIS', youtubeVideoId: 'dQw4w9WgXcQ' },
+      { title: 'PROMPT ATHENA PARA CRIAR CARROSÉIS VIRAIS', youtubeVideoId: '9rrwH-LL6uo' },
       { title: 'PROMPT ESTAGIÁRIA PARA ORGANIZAR O CONTEÚDO NO FORMATO ADEQUADO', youtubeVideoId: 'dQw4w9WgXcQ' }
     ],
     complementaryMaterials: [
