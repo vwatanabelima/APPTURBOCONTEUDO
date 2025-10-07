@@ -39,37 +39,37 @@ export function ModuleCard({ module, progress }: ModuleCardProps) {
   }
 
   return (
-    <Card asChild className="group relative block h-[444px] w-full overflow-hidden rounded-lg border-none bg-card shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
-      <Link href={`/dashboard/module/${module.id}`} passHref>
-        <Image
-          src={imageUrl}
-          alt={title}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
-          className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-75"
-          data-ai-hint="movie poster"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+     <Link href={`/dashboard/module/${module.id}`} passHref legacyBehavior>
+        <Card className="group relative block h-[444px] w-full cursor-pointer overflow-hidden rounded-lg border-none bg-card shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
+            <Image
+            src={imageUrl}
+            alt={title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
+            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-75"
+            data-ai-hint="movie poster"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-           <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/50 backdrop-blur-sm">
-            <Icon className="h-6 w-6 text-white" />
-          </div>
-          <h3 className="text-lg font-bold">{title}</h3>
-        </div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/50 backdrop-blur-sm">
+                <Icon className="h-6 w-6 text-white" />
+            </div>
+            <h3 className="text-lg font-bold">{title}</h3>
+            </div>
 
-        {isCompleted && (
-           <div className="absolute top-2 right-2 p-0">
-            <Badge variant="secondary" className="border-primary bg-primary/80 text-primary-foreground backdrop-blur-sm">
-              Concluído
-            </Badge>
-          </div>
-        )}
-        
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <Progress value={progress} className="h-1 bg-white/20" />
-        </div>
-      </Link>
-    </Card>
+            {isCompleted && (
+            <div className="absolute top-2 right-2 p-0">
+                <Badge variant="secondary" className="border-primary bg-primary/80 text-primary-foreground backdrop-blur-sm">
+                Concluído
+                </Badge>
+            </div>
+            )}
+            
+            <div className="absolute bottom-0 left-0 right-0 p-4">
+            <Progress value={progress} className="h-1 bg-white/20" />
+            </div>
+        </Card>
+    </Link>
   );
 }
