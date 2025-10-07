@@ -33,8 +33,7 @@ export const modules: ModuleWithContent[] = [
     description: 'Aqui você aprende o passo a passo para transformar uma ideia simples em conteúdo visual, usando IA e uma ferramenta automática — sem complicação, sem precisar saber design.\n\nIdeal pra quem tem pouco tempo e quer começar a postar ainda hoje, com consistência e praticidade.',
     Icon: BrainCircuit,
     lessons: [
-      { title: 'Boas-vindas e Introdução', youtubeVideoId: '-AUnFq0vpMw' },
-      { title: 'Instalação do Figma Desktop', youtubeVideoId: 'f6s8q3o4Tgg' },
+      { title: 'Instalação do Figma Desktop', youtubeVideoId: '-AUnFq0vpMw' },
       { title: 'Instalação do Plugin TURBOCONTEÚDO', youtubeVideoId: 'LJH39t3Sg-w' }
     ],
     complementaryMaterials: [
