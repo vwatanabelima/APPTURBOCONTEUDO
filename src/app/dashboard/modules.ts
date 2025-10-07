@@ -77,7 +77,7 @@ export const modules: ModuleWithContent[] = [
     description: 'Aprenda a aplicar seu conteúdo em um template visual profissional com apenas alguns cliques, direto no Figma — sem precisar saber design.',
     Icon: LayoutTemplate,
     lessons: [
-      { title: 'INSTALAÇÃO DE TEMPLATE E FONTES', youtubeVideoId: 'dQw4w9WgXcQ' },
+      { title: 'INSTALAÇÃO DE TEMPLATE E FONTES', youtubeVideoId: 'kGSwly3qLeA' },
       { title: 'UTILIZAÇÃO DO PLUGIN NO FIGMA', youtubeVideoId: 'dQw4w9WgXcQ' }
     ],
     complementaryMaterials: [
