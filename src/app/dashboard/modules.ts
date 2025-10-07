@@ -34,7 +34,7 @@ export const modules: ModuleWithContent[] = [
     Icon: BrainCircuit,
     lessons: [
       { title: 'Instalação do Figma Desktop', youtubeVideoId: '-AUnFq0vpMw' },
-      { title: 'Instalação do Plugin TURBOCONTEÚDO', youtubeVideoId: 'LJH39t3Sg-w' }
+      { title: 'Instalação do Plugin TURBOCONTEÚDO', youtubeVideoId: 'jg5dgSjffBg' }
     ],
     complementaryMaterials: [
       {
