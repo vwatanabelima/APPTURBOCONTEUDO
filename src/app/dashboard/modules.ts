@@ -61,7 +61,7 @@ export const modules: ModuleWithContent[] = [
     complementaryMaterials: [
         {
             title: "ATHENA - A ASSISTENTE DE CRIAÇÃO DE CARROSSÉIS",
-            href: "https://drive.google.com/file/d/1MBa9AlRKvyhrAXu1xmV_VYcVauxRykOl/view?usp=sharing",
+            href: "https://drive.google.com/file/d/1Rt6kJxDWCuLqcOhZvu4XwiTWHLiFzk__/view?usp=sharing",
             iconName: "FileText"
         },
         {
