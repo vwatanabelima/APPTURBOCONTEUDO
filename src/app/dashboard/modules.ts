@@ -1,6 +1,22 @@
 
 import type { LucideIcon } from 'lucide-react';
-import { BrainCircuit, FilePenLine, Gift, LayoutTemplate, Share2, Download, FileText, type LucideProps } from 'lucide-react';
+import {
+  BookUser,
+  BrainCircuit,
+  LayoutTemplate,
+  Share2,
+  Brush,
+  Code,
+  FileText,
+  Youtube,
+  Star,
+  Bot
+} from 'lucide-react';
+
+export type Lesson = {
+  title: string;
+  youtubeVideoId?: string;
+};
 
 export type ComplementaryMaterial = {
   title: string;
@@ -8,55 +24,44 @@ export type ComplementaryMaterial = {
   iconName: keyof typeof import('lucide-react');
 };
 
-export type Lesson = {
-  title: string;
-  videoUrl?: string;
-  youtubeVideoId?: string;
-};
-
-export type Module = {
+export interface Module {
   id: string;
   title: string;
   description: string;
   Icon: LucideIcon;
-};
+}
 
-export type ModuleWithContent = Module & {
-  lessons?: Lesson[];
-  complementaryMaterials?: ComplementaryMaterial[];
-};
+export interface ModuleWithContent extends Module {
+  lessons: Lesson[];
+  complementaryMaterials: ComplementaryMaterial[];
+}
 
-export const modules: ModuleWithContent[] = [
+
+export const modules: (ModuleWithContent)[] = [
   {
     id: 'module1',
-    title: 'MÓDULO 01 - Fluxo Prático',
-    description: 'Aqui você aprende o passo a passo para transformar uma ideia simples em conteúdo visual, usando IA e uma ferramenta automática — sem complicação, sem precisar saber design.\n\nIdeal pra quem tem pouco tempo e quer começar a postar ainda hoje, com consistência e praticidade.',
-    Icon: BrainCircuit,
+    title: 'MÓDULO 01 - Comece por aqui',
+    description: 'Boas-vindas ao curso! Aprenda a instalar o Figma e o plugin exclusivo que vamos usar para criar conteúdo em um fluxo de trabalho otimizado e inteligente.',
+    Icon: Brush,
     lessons: [
-      { title: 'Instalação do Figma Desktop', youtubeVideoId: '-AUnFq0vpMw' },
-      { title: 'Instalação do Plugin TURBOCONTEÚDO', youtubeVideoId: 'vJddr8mM4LM' }
+        { title: 'Instalação do Figma Desktop', youtubeVideoId: '-AUnFq0vpMw' },
+        { title: 'Instalação do Plugin TURBOCONTEÚDO', youtubeVideoId: 'vJddr8mM4LM' },
     ],
     complementaryMaterials: [
-      {
-        title: "DOWNLOAD DO FIGMA DESKTOP",
-        href: "https://www.figma.com/pt-br/downloads/",
-        iconName: "Download",
-      },
-      {
-        title: "PLUGIN TURBOCONTEÚDO",
-        href: "https://drive.google.com/file/d/178SAhvPEFacgA-IgPmDQgfIDTy9ah1KM/view?usp=sharing",
-        iconName: "FileText",
-      }
+        {
+            title: "PLUGIN TURBOCONTEÚDO",
+            href: "https://www.figma.com/community/plugin/1344473634037599298/turboconteudo",
+            iconName: "FileText"
+        }
     ]
   },
   {
     id: 'module2',
-    title: 'MÓDULO 02 - Criação de Posts c/ I.A.',
-    description: 'Descubra como usar prompts inteligentes para gerar textos prontos para redes sociais — mesmo que você esteja sem ideias ou com bloqueio criativo.',
-    Icon: FilePenLine,
+    title: 'MÓDULO 02 - Criação de Conteúdo com IA',
+    description: 'Aprenda a usar seus novos assistentes de IA para criar o roteiro dos seus carrosséis em poucos minutos — de forma estratégica e otimizada para engajamento.',
+    Icon: BrainCircuit,
     lessons: [
       { title: 'PROMPT ATHENA PARA CRIAR CARROSÉIS VIRAIS', youtubeVideoId: '9rrwH-LL6uo' },
-      { title: 'PROMPT ESTAGIÁRIA PARA ORGANIZAR O CONTEÚDO NO FORMATO ADEQUADO', youtubeVideoId: 'dQw4w9WgXcQ' }
     ],
     complementaryMaterials: [
         {
@@ -65,7 +70,7 @@ export const modules: ModuleWithContent[] = [
             iconName: "FileText"
         },
         {
-            title: "ESTAGIÁRIA - Prompt de Formatação Carrossel",
+            title: "ESTAGIÁRIA - A ASSISTENTE DE CRIAÇÃO DE POSTS",
             href: "https://drive.google.com/file/d/1Rt6kJxDWCuLqcOhZvu4XwiTWHLiFzk__/view?usp=sharing",
             iconName: "FileText"
         }
@@ -97,22 +102,5 @@ export const modules: ModuleWithContent[] = [
       { title: 'EDITAR E EXPORTAR O CONTEÚDO', youtubeVideoId: 'dQw4w9WgXcQ' }
     ],
     complementaryMaterials: []
-  },
-  {
-    id: 'module5',
-    title: 'MÓDULO 05 - Bônus Extras',
-    description: 'Desbloqueie dicas e truques exclusivos para turbinar sua criação de conteúdo.',
-    Icon: Gift,
-    lessons: [
-      { title: 'FERRAMENTAS IA GRÁTIS E ÚTEIS', youtubeVideoId: 'dQw4w9WgXcQ' },
-      { title: 'PROMPT RAIZ - O CRIADOR DE PROMPTS', youtubeVideoId: 'dQw4w9WgXcQ' }
-    ],
-    complementaryMaterials: [
-      {
-        title: "CONHEÇA O PROMPT RAIZ",
-        href: "https://pay.kirvano.com/fe159d3f-1d41-4191-a129-9e79603e8392",
-        iconName: "FileText",
-      }
-    ]
   },
 ];
