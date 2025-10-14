@@ -62,6 +62,7 @@ export const modules: (ModuleWithContent)[] = [
     Icon: BrainCircuit,
     lessons: [
       { title: 'PROMPT ATHENA PARA CRIAR CARROSÉIS VIRAIS', youtubeVideoId: '9rrwH-LL6uo' },
+      { title: 'PROMPT ESTAGIÁRIA - A ASSISTENTE NA CRIAÇÃO DOS POSTS', youtubeVideoId: 'mzoo6-sE1_A' }
     ],
     complementaryMaterials: [
         {
