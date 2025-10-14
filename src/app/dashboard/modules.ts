@@ -83,7 +83,7 @@ export const modules: (ModuleWithContent)[] = [
     Icon: LayoutTemplate,
     lessons: [
       { title: 'INSTALAÇÃO DE TEMPLATE E FONTES', youtubeVideoId: 'kGSwly3qLeA' },
-      { title: 'UTILIZAÇÃO DO PLUGIN NO FIGMA', youtubeVideoId: 'dQw4w9WgXcQ' }
+      { title: 'UTILIZAÇÃO DO PLUGIN NO FIGMA', youtubeVideoId: '5AzzFn2uuZk' }
     ],
     complementaryMaterials: [
       {
