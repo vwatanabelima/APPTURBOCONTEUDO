@@ -47,7 +47,7 @@ const calculateOverallProgress = (progress: UserProgress | null): number => {
 
 
 export function Header() {
-  const { user, supabase } = useAuth();
+  const { user, supabase, setUser } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [progress, setProgress] = useState<UserProgress | null>(null);
@@ -83,6 +83,7 @@ export function Header() {
             description: 'Você foi desconectado com sucesso.',
             variant: 'success',
         });
+        setUser(null); // Limpa o usuário do estado global
         router.push('/login');
     }
   };

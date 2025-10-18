@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/context/auth-context';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Header } from '@/components/dashboard/Header';
 
 export default function DashboardLayout({
@@ -10,17 +10,27 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, loading } = useAuth();
+  const { user, supabase } = useAuth();
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Apenas redireciona se o carregamento inicial terminou e não há usuário.
-    if (!loading && !user) {
-      router.push('/login');
-    }
-  }, [user, loading, router]);
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      // Se não houver sessão ativa, redireciona para o login.
+      if (!session) {
+        router.push('/login');
+      } else {
+        // Se há uma sessão, podemos parar de carregar e mostrar o conteúdo.
+        setLoading(false);
+      }
+    };
 
-  // Enquanto estiver carregando, exibe um spinner para evitar piscar o conteúdo
+    checkSession();
+  }, [user, supabase, router]);
+
+  // Enquanto estiver verificando a sessão, exibe um spinner.
   if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
@@ -29,7 +39,8 @@ export default function DashboardLayout({
     );
   }
 
-  // Se o carregamento terminou e há um usuário, renderiza o layout e o conteúdo.
+  // Se o carregamento terminou e o usuário está autenticado, renderiza o layout.
+  // A verificação `user` vindo do contexto adiciona uma camada extra de segurança.
   if (user) {
     return (
       <div className="flex min-h-screen w-full flex-col bg-background">
@@ -41,7 +52,7 @@ export default function DashboardLayout({
     );
   }
 
-  // Se o carregamento terminou e não há usuário, o useEffect já cuidou do redirecionamento.
-  // Retornar null evita que qualquer conteúdo do painel seja renderizado antes do redirecionamento.
+  // Se o carregamento terminou, mas não há usuário, o useEffect já cuidou do redirecionamento.
+  // Retornar null evita renderizações indesejadas antes do redirecionamento ser concluído.
   return null;
 }

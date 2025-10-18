@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Icons } from '@/components/icons';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Terminal } from 'lucide-react';
+import { initializeUserDocument } from '@/lib/database';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Por favor, insira um email válido.' }),
@@ -23,7 +24,7 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
-  const { user, supabase } = useAuth();
+  const { supabase, user, setUser } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,7 +40,7 @@ export default function LoginPage() {
   });
 
   useEffect(() => {
-    // Se o usuário já estiver logado, redirecione-o para o dashboard.
+    // Se o usuário já estiver logado (vindo do context), redirecione-o para o dashboard.
     if (user) {
       router.push('/dashboard');
     }
@@ -47,7 +48,7 @@ export default function LoginPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
     });
@@ -60,27 +61,22 @@ export default function LoginPage() {
             variant: 'destructive',
         });
         setIsSubmitting(false);
-    } else {
+    } else if (data.user) {
         toast({
             title: 'Login bem-sucedido!',
             description: 'Redirecionando para o painel...',
             variant: 'success',
         });
-        // O onAuthStateChange no AuthProvider cuidará do redirecionamento
-        // mas podemos fazer um push para uma experiência mais rápida.
+        // Inicializa o documento do usuário
+        await initializeUserDocument(supabase, data.user);
+        // Atualiza o estado global
+        setUser(data.user);
+        // Força o redirecionamento e a atualização da página
         router.push('/dashboard');
+        router.refresh(); 
     }
   }
   
-  if (user) {
-    // Se o usuário já estiver autenticado, mostramos um loader enquanto redireciona.
-    return (
-       <div className="flex h-screen w-full items-center justify-center bg-background">
-        <div className="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
-      </div>
-    );
-  }
-
   if (!isSupabaseConfigured) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4">
