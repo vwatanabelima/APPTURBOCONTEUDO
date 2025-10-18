@@ -1,4 +1,3 @@
-
 'use client';
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
@@ -16,7 +15,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>({ user: null, loading: true, supabase: null });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [supabase] = useState(() => getSupabaseBrowserClient());
+  const supabase = getSupabaseBrowserClient();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -24,28 +23,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       const currentUser = session?.user ?? null;
       if (currentUser) {
-        await initializeUserDocument(supabase, currentUser);
+        // Prevent re-initializing on every auth event
+        if (!user) {
+          await initializeUserDocument(supabase, currentUser);
+        }
       }
       setUser(currentUser);
       setLoading(false);
     });
 
-    // Manually trigger a session check on initial load
+    // Check initial session
     const checkInitialSession = async () => {
-        const { data: { session } } = await supabase.auth.getSession();
-        const currentUser = session?.user ?? null;
-        if(currentUser) {
-            await initializeUserDocument(supabase, currentUser);
-        }
-        setUser(currentUser);
-        setLoading(false);
+      const { data: { session } } = await supabase.auth.getSession();
+      const currentUser = session?.user ?? null;
+      if(currentUser) {
+          await initializeUserDocument(supabase, currentUser);
+      }
+      setUser(currentUser);
+      setLoading(false);
     }
-    checkInitialSession();
+    
+    // Only run this on initial mount
+    if (loading) {
+        checkInitialSession();
+    }
 
 
     return () => {
       subscription.unsubscribe();
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [supabase]);
 
   const value = {

@@ -77,13 +77,24 @@ export default function LoginPage() {
     }
   }
   
-  if (loading || (!loading && user)) {
+  if (loading) {
      return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
         <div className="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
       </div>
     );
   }
+
+  // If user is already logged in, the useEffect will redirect.
+  // This prevents a flash of the login form.
+  if (user) {
+    return (
+       <div className="flex h-screen w-full items-center justify-center bg-background">
+        <div className="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
+      </div>
+    );
+  }
+
 
   if (!isSupabaseConfigured) {
     return (
