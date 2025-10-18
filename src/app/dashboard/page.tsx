@@ -118,18 +118,6 @@ export default function DashboardPage() {
               Desbloqueie o poder de criar seus próprios prompts e assistentes de IA personalizados.
             </p>
           </Card>
-          <Card className="relative group flex h-[444px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-muted-foreground/50 bg-card/50 p-6 text-center shadow-none">
-            <div className="absolute top-2 right-2">
-              <Badge variant="outline" className="border-yellow-400/50 text-yellow-400">Em Breve</Badge>
-            </div>
-            <div className="mb-4 rounded-full bg-muted/80 p-4">
-              <Video className="h-8 w-8 text-muted-foreground" />
-            </div>
-            <h3 className="text-lg font-bold text-card-foreground">Assistente de criação de reels monetizados</h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Crie roteiros e vídeos curtos virais e otimizados para monetização em minutos.
-            </p>
-          </Card>
         </div>
       </div>
     </div>
