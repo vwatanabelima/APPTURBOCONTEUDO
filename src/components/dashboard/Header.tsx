@@ -69,7 +69,6 @@ export function Header() {
   const overallProgress = calculateOverallProgress(progress);
 
   const handleLogout = async () => {
-    if (!supabase) return;
     const { error } = await supabase.auth.signOut();
     if (error) {
         console.error('Logout error:', error);

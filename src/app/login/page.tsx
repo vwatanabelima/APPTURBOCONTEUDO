@@ -46,14 +46,6 @@ export default function LoginPage() {
   }, [user, router]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!supabase) {
-        toast({
-            title: 'Erro de Configuração',
-            description: 'A conexão com o Supabase não foi inicializada. Verifique as variáveis de ambiente.',
-            variant: 'destructive',
-        });
-        return;
-    }
     setIsSubmitting(true);
     const { error } = await supabase.auth.signInWithPassword({
         email: values.email,

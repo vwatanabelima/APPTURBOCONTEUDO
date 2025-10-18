@@ -12,45 +12,27 @@ type AuthContextType = {
   supabase: SupabaseClient<Database>;
 };
 
-const AuthContext = createContext<AuthContextType>({ user: null, loading: true, supabase: getSupabaseBrowserClient() });
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const supabase = getSupabaseBrowserClient();
+  const [supabase] = useState(() => getSupabaseBrowserClient());
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // This is a one-time check for the initial session.
-    const checkInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      const currentUser = session?.user ?? null;
-      if (currentUser) {
-        await initializeUserDocument(supabase, currentUser);
-      }
-      setUser(currentUser);
-      setLoading(false); // End loading after the first check
-    };
-
-    checkInitialSession();
-
-    // This listener handles all subsequent auth events.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       const currentUser = session?.user ?? null;
-      if (currentUser && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
-         // Initialize on sign-in or token refresh to ensure profile exists
+      if (currentUser && (event === 'SIGNED_IN' || event === 'INITIAL_SESSION')) {
         await initializeUserDocument(supabase, currentUser);
       }
       setUser(currentUser);
-       // Ensure loading is false after any auth event.
-      if (loading) {
-        setLoading(false);
-      }
+      setLoading(false);
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [supabase, loading]); // Keep supabase in dependencies
+  }, [supabase]);
 
   const value = {
     user,
