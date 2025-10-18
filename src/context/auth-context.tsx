@@ -10,58 +10,51 @@ import type { Database } from '@/types/supabase';
 type AuthContextType = {
   user: User | null;
   loading: boolean;
+  supabase: SupabaseClient<Database> | null;
 };
 
-const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
+const AuthContext = createContext<AuthContextType>({ user: null, loading: true, supabase: null });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [supabase, setSupabase] = useState<SupabaseClient<Database> | null>(null);
+  const [supabase] = useState(() => getSupabaseBrowserClient());
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // getSupabaseBrowserClient is called inside useEffect, ensuring it runs only on the client.
-    const supabaseClient = getSupabaseBrowserClient();
-    setSupabase(supabaseClient);
-
-    const checkUser = async () => {
-      try {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        const currentUser = session?.user ?? null;
-        if (currentUser) {
-          // Pass the client instance to the database function
-          await initializeUserDocument(supabaseClient, currentUser);
-        }
-        setUser(currentUser);
-      } catch (error) {
-        console.error("Error getting session:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkUser();
-
-    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       const currentUser = session?.user ?? null;
       if (currentUser) {
-        // Pass the client instance to the database function
-        await initializeUserDocument(supabaseClient, currentUser);
+        await initializeUserDocument(supabase, currentUser);
       }
       setUser(currentUser);
       setLoading(false);
     });
 
-    return () => {
-      subscription?.unsubscribe();
-    };
-  }, []);
+    // Manually trigger a session check on initial load
+    const checkInitialSession = async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        const currentUser = session?.user ?? null;
+        if(currentUser) {
+            await initializeUserDocument(supabase, currentUser);
+        }
+        setUser(currentUser);
+        setLoading(false);
+    }
+    checkInitialSession();
 
-  return (
-    <AuthContext.Provider value={{ user, loading }}>
-      {children}
-    </AuthContext.Provider>
-  );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [supabase]);
+
+  const value = {
+    user,
+    loading,
+    supabase
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => {

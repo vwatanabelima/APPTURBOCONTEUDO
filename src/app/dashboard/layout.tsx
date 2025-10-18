@@ -19,12 +19,17 @@ export default function DashboardLayout({
     }
   }, [user, loading, router]);
 
-  if (loading || !user) {
+  if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
         <div className="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
       </div>
     );
+  }
+
+  if (!user) {
+    // This case will be handled by the useEffect, but it's a good practice to have a fallback.
+    return null;
   }
 
   return (

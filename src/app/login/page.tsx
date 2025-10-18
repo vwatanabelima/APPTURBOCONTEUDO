@@ -8,7 +8,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useAuth } from '@/context/auth-context';
-import { getSupabaseBrowserClient } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,7 +23,7 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
-  const { user, loading } = useAuth();
+  const { user, loading, supabase } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,7 +45,7 @@ export default function LoginPage() {
   }, [user, loading, router]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!isSupabaseConfigured) {
+    if (!supabase) {
         toast({
             title: 'Erro de Configuração',
             description: 'A conexão com o Supabase não foi inicializada. Verifique as variáveis de ambiente.',
@@ -54,7 +53,6 @@ export default function LoginPage() {
         });
         return;
     }
-    const supabase = getSupabaseBrowserClient();
     setIsSubmitting(true);
     const { error } = await supabase.auth.signInWithPassword({
         email: values.email,
@@ -68,15 +66,15 @@ export default function LoginPage() {
             description: 'Credenciais inválidas. Por favor, verifique seu email e senha.',
             variant: 'destructive',
         });
+        setIsSubmitting(false);
     } else {
         toast({
             title: 'Login bem-sucedido!',
             description: 'Redirecionando para o painel...',
             variant: 'success',
         });
-        router.push('/dashboard');
+        // The useEffect will handle the redirection
     }
-    setIsSubmitting(false);
   }
   
   if (loading || (!loading && user)) {

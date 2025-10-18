@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { LogOut, LifeBuoy } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { getSupabaseBrowserClient } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import {
@@ -22,7 +21,7 @@ import { Icons } from '@/components/icons';
 import { Progress } from '@/components/ui/progress';
 import { getUserProgress } from '@/lib/database';
 import { modules } from '@/app/dashboard/modules';
-import type { UserProgress, LessonProgress } from '@/types';
+import type { UserProgress } from '@/types';
 
 
 const calculateOverallProgress = (progress: UserProgress | null): number => {
@@ -48,11 +47,10 @@ const calculateOverallProgress = (progress: UserProgress | null): number => {
 
 
 export function Header() {
-  const { user } = useAuth();
+  const { user, supabase } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [progress, setProgress] = useState<UserProgress | null>(null);
-  const supabase = getSupabaseBrowserClient();
 
    useEffect(() => {
     if (user) {
@@ -71,6 +69,7 @@ export function Header() {
   const overallProgress = calculateOverallProgress(progress);
 
   const handleLogout = async () => {
+    if (!supabase) return;
     const { error } = await supabase.auth.signOut();
     if (error) {
         console.error('Logout error:', error);
