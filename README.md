@@ -4,7 +4,7 @@ Bem-vindo ao TurboConteúdo, seu painel com tecnologia de IA para turbinar a cri
 
 ## Funcionalidades
 
-- **Autenticação Firebase**: Login seguro, registro e funcionalidade de redefinição de senha.
+- **Autenticação Supabase**: Login seguro, registro e funcionalidade de redefinição de senha.
 - **Rotas Protegidas**: Seu painel é privado e acessível somente após o login.
 - **Painel Modular**: Acesse diferentes ferramentas de criação de conteúdo organizadas como módulos:
     - **Geração de Fluxo Prático**: Use a IA para gerar um prompt de fluxo de trabalho prático, guiando você para criar conteúdo valioso com ferramentas externas.
@@ -18,7 +18,7 @@ Bem-vindo ao TurboConteúdo, seu painel com tecnologia de IA para turbinar a cri
 
 - **Framework**: [Next.js](https://nextjs.org/) (App Router)
 - **Estilização**: [Tailwind CSS](https://tailwindcss.com/) com componentes [shadcn/ui](https://ui.shadcn.com/)
-- **Backend & Autenticação**: [Firebase](https://firebase.google.com/) (Auth e Firestore)
+- **Backend & Autenticação**: [Supabase](https://supabase.com/) (Auth e Database)
 - **IA Generativa**: [Google AI & Genkit](https://ai.google.dev/genkit)
 
 ## Começando
