@@ -23,7 +23,7 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
-  const { user, loading, supabase } = useAuth();
+  const { user, supabase } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,10 +39,11 @@ export default function LoginPage() {
   });
 
   useEffect(() => {
-    if (!loading && user) {
+    // Se o usuário já estiver logado, redirecione-o para o dashboard.
+    if (user) {
       router.push('/dashboard');
     }
-  }, [user, loading, router]);
+  }, [user, router]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!supabase) {
@@ -66,38 +67,27 @@ export default function LoginPage() {
             description: 'Credenciais inválidas. Por favor, verifique seu email e senha.',
             variant: 'destructive',
         });
-        setIsSubmitting(false); // Bug fix: Ensure submitting is set to false on error
+        setIsSubmitting(false);
     } else {
         toast({
             title: 'Login bem-sucedido!',
             description: 'Redirecionando para o painel...',
             variant: 'success',
         });
-        // The onAuthStateChange listener in AuthProvider will handle the redirect.
-        // No need to manually push here, but we ensure the button state is reset.
-        setIsSubmitting(false); // Bug fix: Ensure submitting is set to false on success
-        router.push('/dashboard'); // Explicitly redirect
+        // O onAuthStateChange no AuthProvider cuidará do redirecionamento
+        // mas podemos fazer um push para uma experiência mais rápida.
+        router.push('/dashboard');
     }
   }
   
-  if (loading) {
-     return (
-      <div className="flex h-screen w-full items-center justify-center bg-background">
-        <div className="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
-      </div>
-    );
-  }
-
-  // If user is already logged in, the useEffect will redirect.
-  // This prevents a flash of the login form.
   if (user) {
+    // Se o usuário já estiver autenticado, mostramos um loader enquanto redireciona.
     return (
        <div className="flex h-screen w-full items-center justify-center bg-background">
         <div className="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
       </div>
     );
   }
-
 
   if (!isSupabaseConfigured) {
     return (

@@ -9,10 +9,10 @@ import type { Database } from '@/types/supabase';
 type AuthContextType = {
   user: User | null;
   loading: boolean;
-  supabase: SupabaseClient<Database> | null;
+  supabase: SupabaseClient<Database>;
 };
 
-const AuthContext = createContext<AuthContextType>({ user: null, loading: true, supabase: null });
+const AuthContext = createContext<AuthContextType>({ user: null, loading: true, supabase: getSupabaseBrowserClient() });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const supabase = getSupabaseBrowserClient();
@@ -28,7 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await initializeUserDocument(supabase, currentUser);
       }
       setUser(currentUser);
-      setLoading(false);
+      setLoading(false); // End loading after the first check
     };
 
     checkInitialSession();
@@ -36,11 +36,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // This listener handles all subsequent auth events.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       const currentUser = session?.user ?? null;
-      if (currentUser && event === 'SIGNED_IN') {
+      if (currentUser && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
+         // Initialize on sign-in or token refresh to ensure profile exists
         await initializeUserDocument(supabase, currentUser);
       }
       setUser(currentUser);
-      // Ensure loading is false after the first auth event.
+       // Ensure loading is false after any auth event.
       if (loading) {
         setLoading(false);
       }
@@ -49,8 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => {
       subscription.unsubscribe();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [supabase]);
+  }, [supabase, loading]); // Keep supabase in dependencies
 
   const value = {
     user,
