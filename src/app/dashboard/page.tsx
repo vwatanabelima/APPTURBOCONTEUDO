@@ -18,7 +18,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Lock } from 'lucide-react';
+import { Lock, Video } from 'lucide-react';
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -105,7 +105,7 @@ export default function DashboardPage() {
 
       <div className="space-y-6 fade-in">
         <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">Você também pode gostar de:</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <Card className="relative group flex h-[444px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-muted-foreground/50 bg-card/50 p-6 text-center shadow-none">
             <div className="absolute top-2 right-2">
               <Badge variant="outline" className="border-yellow-400/50 text-yellow-400">Em Breve</Badge>
@@ -116,6 +116,18 @@ export default function DashboardPage() {
             <h3 className="text-lg font-bold text-card-foreground">PROMPT Raiz - O criador de prompts e assistentes</h3>
             <p className="mt-2 text-sm text-muted-foreground">
               Desbloqueie o poder de criar seus próprios prompts e assistentes de IA personalizados.
+            </p>
+          </Card>
+          <Card className="relative group flex h-[444px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-muted-foreground/50 bg-card/50 p-6 text-center shadow-none">
+            <div className="absolute top-2 right-2">
+              <Badge variant="outline" className="border-yellow-400/50 text-yellow-400">Em Breve</Badge>
+            </div>
+            <div className="mb-4 rounded-full bg-muted/80 p-4">
+              <Video className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <h3 className="text-lg font-bold text-card-foreground">Assistente de criação de reels monetizados</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Crie roteiros e vídeos curtos virais e otimizados para monetização em minutos.
             </p>
           </Card>
         </div>
