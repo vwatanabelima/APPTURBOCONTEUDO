@@ -1,8 +1,10 @@
+
 'use client';
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { onAuthStateChanged, type User } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import type { User } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase';
+import { initializeUserDocument } from '@/lib/database';
 
 type AuthContextType = {
   user: User | null;
@@ -16,16 +18,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!auth) {
-      setLoading(false);
-      return;
-    }
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    const checkUser = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const currentUser = session?.user ?? null;
+        if (currentUser) {
+          await initializeUserDocument(currentUser);
+        }
+        setUser(currentUser);
+      } catch (error) {
+        console.error("Error getting session:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      const currentUser = session?.user ?? null;
+      if (currentUser) {
+        await initializeUserDocument(currentUser);
+      }
+      setUser(currentUser);
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      subscription?.unsubscribe();
+    };
   }, []);
 
   return (

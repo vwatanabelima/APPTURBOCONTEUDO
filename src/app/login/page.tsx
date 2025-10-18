@@ -7,10 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-
 import { useAuth } from '@/context/auth-context';
-import { auth } from '@/lib/firebase';
+import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -30,6 +28,8 @@ export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const isSupabaseConfigured = process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,33 +46,36 @@ export default function LoginPage() {
   }, [user, loading, router]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!auth) {
+    if (!isSupabaseConfigured) {
         toast({
             title: 'Erro de Configuração',
-            description: 'A conexão com o Firebase não foi inicializada. Verifique as variáveis de ambiente.',
+            description: 'A conexão com o Supabase não foi inicializada. Verifique as variáveis de ambiente.',
             variant: 'destructive',
         });
         return;
     }
     setIsSubmitting(true);
-    try {
-      await signInWithEmailAndPassword(auth, values.email, values.password);
-      toast({
-        title: 'Login bem-sucedido!',
-        description: 'Redirecionando para o painel...',
-        variant: 'success',
-      });
-      router.push('/dashboard');
-    } catch (error: any) {
-      console.error(error);
-      toast({
-        title: 'Erro no login',
-        description: 'Email ou senha inválidos. Por favor, tente novamente.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsSubmitting(false);
+    const { error } = await supabase.auth.signInWithPassword({
+        email: values.email,
+        password: values.password,
+    });
+
+    if (error) {
+        console.error(error);
+        toast({
+            title: 'Erro no login',
+            description: 'Credenciais inválidas. Por favor, verifique seu email e senha.',
+            variant: 'destructive',
+        });
+    } else {
+        toast({
+            title: 'Login bem-sucedido!',
+            description: 'Redirecionando para o painel...',
+            variant: 'success',
+        });
+        router.push('/dashboard');
     }
+    setIsSubmitting(false);
   }
   
   if (loading || (!loading && user)) {
@@ -83,15 +86,15 @@ export default function LoginPage() {
     );
   }
 
-  if (!auth) {
+  if (!isSupabaseConfigured) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4">
         <div className="w-full max-w-md">
            <Alert variant="destructive">
             <Terminal className="h-4 w-4" />
-            <AlertTitle>Erro de Configuração do Firebase</AlertTitle>
+            <AlertTitle>Erro de Configuração do Supabase</AlertTitle>
             <AlertDescription>
-              As variáveis de ambiente do Firebase não foram encontradas. Por favor, configure seu arquivo `.env` para usar a autenticação.
+              As variáveis de ambiente `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` não foram encontradas. Por favor, configure seu arquivo `.env` ou as configurações de ambiente da sua plataforma de hospedagem.
             </AlertDescription>
           </Alert>
         </div>

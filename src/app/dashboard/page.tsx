@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/auth-context';
-import { getUserProgress } from '@/lib/firestore';
+import { getUserProgress } from '@/lib/database';
 import { ModuleCard } from '@/components/dashboard/ModuleCard';
 import { modules } from './modules';
 import { useToast } from '@/hooks/use-toast';
@@ -28,7 +28,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (user) {
-      getUserProgress(user.uid)
+      getUserProgress(user.id)
         .then((userProgress) => {
           if (userProgress) {
             setProgress(userProgress);

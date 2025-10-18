@@ -29,7 +29,7 @@ export function Comments() {
         const comment: Comment = {
             id: comments.length + 1,
             author: user.email?.split('@')[0] || 'Usuário',
-            avatar: user.photoURL || '',
+            avatar: user.user_metadata?.avatar_url || '',
             initial: user.email ? user.email.charAt(0).toUpperCase() : 'U',
             text: newComment,
             date: 'Agora mesmo'
@@ -46,7 +46,7 @@ export function Comments() {
       <h3 className="text-lg font-semibold">Comentários</h3>
       <div className="flex items-start gap-4">
         <Avatar>
-          <AvatarImage src={user?.photoURL ?? ''} />
+          <AvatarImage src={user?.user_metadata?.avatar_url ?? ''} />
           <AvatarFallback>{userInitial}</AvatarFallback>
         </Avatar>
         <form onSubmit={handleSubmit} className="flex-1 space-y-2">

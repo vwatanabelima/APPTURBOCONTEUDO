@@ -30,7 +30,7 @@ export default function SupportPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: user?.displayName || '',
+      name: user?.user_metadata?.full_name || '',
       email: user?.email || '',
       message: '',
     },
@@ -49,7 +49,7 @@ export default function SupportPage() {
         });
         setIsSubmitting(false);
         form.reset({
-            name: user?.displayName || '',
+            name: user?.user_metadata?.full_name || '',
             email: user?.email || '',
             message: '',
         });

@@ -11,7 +11,7 @@ import { Comments } from '@/components/dashboard/Comments';
 import { cn } from '@/lib/utils';
 import * as LucideIcons from 'lucide-react';
 import { useAuth } from '@/context/auth-context';
-import { getUserProgress } from '@/lib/firestore';
+import { getUserProgress } from '@/lib/database';
 import type { LessonProgress } from '@/types';
 import { toggleLessonCompleted } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
@@ -42,7 +42,7 @@ export default function ModuleContent({ id, title, description, lessons, complem
 
   useEffect(() => {
     if (user) {
-      getUserProgress(user.uid).then(progress => {
+      getUserProgress(user.id).then(progress => {
         if (progress && progress[id]) {
           setLessonProgress(progress[id]);
         }
@@ -56,7 +56,7 @@ export default function ModuleContent({ id, title, description, lessons, complem
     const newStatus = !currentStatus;
 
     startTransition(async () => {
-      const result = await toggleLessonCompleted(user.uid, id, lessonTitle, newStatus);
+      const result = await toggleLessonCompleted(user.id, id, lessonTitle, newStatus);
       if (result.success) {
         setLessonProgress(prev => ({ ...prev, [lessonTitle]: newStatus }));
         toast({

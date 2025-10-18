@@ -2,11 +2,9 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { signOut } from 'firebase/auth';
 import { LogOut, LifeBuoy } from 'lucide-react';
 import { useEffect, useState } from 'react';
-
-import { auth } from '@/lib/firebase';
+import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import {
@@ -21,7 +19,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/context/auth-context';
 import { Icons } from '@/components/icons';
 import { Progress } from '@/components/ui/progress';
-import { getUserProgress } from '@/lib/firestore';
+import { getUserProgress } from '@/lib/database';
 import { modules } from '@/app/dashboard/modules';
 import type { UserProgress, LessonProgress } from '@/types';
 
@@ -56,7 +54,7 @@ export function Header() {
 
    useEffect(() => {
     if (user) {
-      getUserProgress(user.uid)
+      getUserProgress(user.id)
         .then((userProgress) => {
           if (userProgress) {
             setProgress(userProgress);
@@ -71,22 +69,21 @@ export function Header() {
   const overallProgress = calculateOverallProgress(progress);
 
   const handleLogout = async () => {
-    if (!auth) return;
-    try {
-      await signOut(auth);
-      toast({
-        title: 'Logout realizado',
-        description: 'Você foi desconectado com sucesso.',
-        variant: 'success',
-      });
-      router.push('/login');
-    } catch (error) {
-      console.error('Logout error:', error);
-      toast({
-        title: 'Erro ao sair',
-        description: 'Não foi possível fazer logout. Tente novamente.',
-        variant: 'destructive',
-      });
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+        console.error('Logout error:', error);
+        toast({
+            title: 'Erro ao sair',
+            description: 'Não foi possível fazer logout. Tente novamente.',
+            variant: 'destructive',
+        });
+    } else {
+        toast({
+            title: 'Logout realizado',
+            description: 'Você foi desconectado com sucesso.',
+            variant: 'success',
+        });
+        router.push('/login');
     }
   };
 
@@ -103,7 +100,7 @@ export function Header() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-8 w-8">
-                {user?.photoURL && <AvatarImage src={user.photoURL} alt={user.displayName ?? ''} />}
+                {user?.user_metadata?.avatar_url && <AvatarImage src={user.user_metadata.avatar_url} alt={user.user_metadata.full_name ?? ''} />}
                 <AvatarFallback className="bg-primary text-primary-foreground">
                   {userInitial}
                 </AvatarFallback>
@@ -130,7 +127,7 @@ export function Header() {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout} disabled={!auth}>
+            <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="mr-2 h-4 w-4" />
               <span>Sair</span>
             </DropdownMenuItem>

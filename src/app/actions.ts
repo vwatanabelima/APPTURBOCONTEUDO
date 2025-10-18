@@ -1,7 +1,7 @@
 'use server';
 
 import { generatePracticalFlowPrompt } from '@/ai/flows/generate-practical-flow-prompt';
-import { setLessonCompleted as setLessonCompletedInDb } from '@/lib/firestore';
+import { setLessonCompleted as setLessonCompletedInDb } from '@/lib/database';
 import { revalidatePath } from 'next/cache';
 
 export async function getPracticalFlowPrompt(topic: string) {

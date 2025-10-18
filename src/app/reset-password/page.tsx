@@ -6,9 +6,7 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { sendPasswordResetEmail } from 'firebase/auth';
-
-import { auth } from '@/lib/firebase';
+import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -33,25 +31,26 @@ export default function ResetPasswordPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!auth) return;
     setIsSubmitting(true);
-    try {
-      await sendPasswordResetEmail(auth, values.email);
-      toast({
-        title: 'Email enviado!',
-        description: 'Verifique sua caixa de entrada para o link de redefinição de senha.',
-      });
-      setSubmitted(true);
-    } catch (error: any) {
-      console.error(error);
-      toast({
-        title: 'Erro',
-        description: 'Não foi possível enviar o email de redefinição. Verifique o email e tente novamente.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsSubmitting(false);
+    const { error } = await supabase.auth.resetPasswordForEmail(values.email, {
+        redirectTo: `${window.location.origin}/update-password`, // This page needs to be created
+    });
+
+    if (error) {
+        console.error(error);
+        toast({
+            title: 'Erro',
+            description: 'Não foi possível enviar o email de redefinição. Verifique o email e tente novamente.',
+            variant: 'destructive',
+        });
+    } else {
+        toast({
+            title: 'Email enviado!',
+            description: 'Verifique sua caixa de entrada para o link de redefinição de senha.',
+        });
+        setSubmitted(true);
     }
+    setIsSubmitting(false);
   }
 
   return (
@@ -94,7 +93,7 @@ export default function ResetPasswordPage() {
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" className="w-full" disabled={isSubmitting || !auth}>
+                    <Button type="submit" className="w-full" disabled={isSubmitting}>
                       {isSubmitting ? 'Enviando...' : 'Enviar link de redefinição'}
                     </Button>
                   </form>
