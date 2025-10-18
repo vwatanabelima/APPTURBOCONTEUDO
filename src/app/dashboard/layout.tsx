@@ -28,7 +28,8 @@ export default function DashboardLayout({
   }
 
   if (!user) {
-    // This case will be handled by the useEffect, but it's a good practice to have a fallback.
+    // This case is handled by the useEffect, but it's a good practice to have a fallback.
+    // It also prevents a flash of the dashboard content before redirection.
     return null;
   }
 

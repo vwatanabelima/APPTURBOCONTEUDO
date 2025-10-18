@@ -23,9 +23,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       const currentUser = session?.user ?? null;
       if (currentUser) {
-        // Prevent re-initializing on every auth event
-        if (!user) {
-          await initializeUserDocument(supabase, currentUser);
+        // Initialize user document on sign in if it doesn't exist
+        if (event === 'SIGNED_IN') {
+           await initializeUserDocument(supabase, currentUser);
         }
       }
       setUser(currentUser);
@@ -36,17 +36,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const checkInitialSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       const currentUser = session?.user ?? null;
+      
       if(currentUser) {
+          // Ensure user document is there on first load
           await initializeUserDocument(supabase, currentUser);
       }
       setUser(currentUser);
       setLoading(false);
     }
     
-    // Only run this on initial mount
-    if (loading) {
-        checkInitialSession();
-    }
+    checkInitialSession();
 
 
     return () => {

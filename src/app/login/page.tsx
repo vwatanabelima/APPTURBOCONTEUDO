@@ -73,7 +73,9 @@ export default function LoginPage() {
             description: 'Redirecionando para o painel...',
             variant: 'success',
         });
-        // The useEffect will handle the redirection
+        // Force a redirect and then a refresh to ensure the new auth state is picked up by the layout.
+        router.push('/dashboard');
+        router.refresh();
     }
   }
   
