@@ -152,7 +152,7 @@ export default function LoginPage() {
           </CardContent>
         </Card>
         <div className="mt-8 text-center text-sm text-muted-foreground">
-          Criado por <a href="https://www.instagram.com/watanabe.ia" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline">@watanabe.ia</a>
+          Criado por <a href="https://www.instagram.com/watanabe.ia" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-semibold text-primary hover:underline">@watanabe.ia 🤖</a>
         </div>
       </div>
     </div>
