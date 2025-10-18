@@ -1,6 +1,6 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
+import { getAuth, type Auth } from "firebase/auth";
+import { getFirestore, type Firestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,7 +11,10 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Check if all required environment variables are present
+let app: FirebaseApp | null = null;
+let auth: Auth | null = null;
+let db: Firestore | null = null;
+
 const isFirebaseConfigValid = 
   firebaseConfig.apiKey &&
   firebaseConfig.authDomain &&
@@ -20,13 +23,16 @@ const isFirebaseConfigValid =
   firebaseConfig.messagingSenderId &&
   firebaseConfig.appId;
 
-const app = isFirebaseConfigValid && !getApps().length ? initializeApp(firebaseConfig) : (getApps().length ? getApp() : null);
-const auth = app ? getAuth(app) : null;
-const db = app ? getFirestore(app) : null;
-
-// Throw an error in development if the config is invalid, so it's clear what's wrong.
-if (!isFirebaseConfigValid && process.env.NODE_ENV === 'development') {
-    console.warn('Firebase config is incomplete. Please check your .env file.');
+if (isFirebaseConfigValid) {
+  if (getApps().length === 0) {
+    app = initializeApp(firebaseConfig);
+  } else {
+    app = getApp();
+  }
+  auth = getAuth(app);
+  db = getFirestore(app);
+} else {
+  console.warn('Firebase config is incomplete. Please check your .env file or environment variables.');
 }
 
 export { app, auth, db };
