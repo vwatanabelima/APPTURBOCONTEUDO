@@ -66,16 +66,17 @@ export default function LoginPage() {
             description: 'Credenciais inválidas. Por favor, verifique seu email e senha.',
             variant: 'destructive',
         });
-        setIsSubmitting(false);
+        setIsSubmitting(false); // Bug fix: Ensure submitting is set to false on error
     } else {
         toast({
             title: 'Login bem-sucedido!',
             description: 'Redirecionando para o painel...',
             variant: 'success',
         });
-        // Force a redirect and then a refresh to ensure the new auth state is picked up by the layout.
-        router.push('/dashboard');
-        router.refresh();
+        // The onAuthStateChange listener in AuthProvider will handle the redirect.
+        // No need to manually push here, but we ensure the button state is reset.
+        setIsSubmitting(false); // Bug fix: Ensure submitting is set to false on success
+        router.push('/dashboard'); // Explicitly redirect
     }
   }
   

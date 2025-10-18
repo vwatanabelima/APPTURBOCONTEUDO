@@ -20,33 +20,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      const currentUser = session?.user ?? null;
-      if (currentUser) {
-        // Initialize user document on sign in if it doesn't exist
-        if (event === 'SIGNED_IN') {
-           await initializeUserDocument(supabase, currentUser);
-        }
-      }
-      setUser(currentUser);
-      setLoading(false);
-    });
-
-    // Check initial session
+    // This is a one-time check for the initial session.
     const checkInitialSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       const currentUser = session?.user ?? null;
-      
-      if(currentUser) {
-          // Ensure user document is there on first load
-          await initializeUserDocument(supabase, currentUser);
+      if (currentUser) {
+        await initializeUserDocument(supabase, currentUser);
       }
       setUser(currentUser);
       setLoading(false);
-    }
-    
+    };
+
     checkInitialSession();
 
+    // This listener handles all subsequent auth events.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      const currentUser = session?.user ?? null;
+      if (currentUser && event === 'SIGNED_IN') {
+        await initializeUserDocument(supabase, currentUser);
+      }
+      setUser(currentUser);
+      // Ensure loading is false after the first auth event.
+      if (loading) {
+        setLoading(false);
+      }
+    });
 
     return () => {
       subscription.unsubscribe();
