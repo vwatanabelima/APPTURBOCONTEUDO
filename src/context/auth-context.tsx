@@ -2,9 +2,10 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import type { User } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase';
+import type { User, SupabaseClient } from '@supabase/supabase-js';
+import { getSupabaseBrowserClient } from '@/lib/supabase';
 import { initializeUserDocument } from '@/lib/database';
+import type { Database } from '@/types/supabase';
 
 type AuthContextType = {
   user: User | null;
@@ -14,16 +15,22 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const [supabase, setSupabase] = useState<SupabaseClient<Database> | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // getSupabaseBrowserClient is called inside useEffect, ensuring it runs only on the client.
+    const supabaseClient = getSupabaseBrowserClient();
+    setSupabase(supabaseClient);
+
     const checkUser = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session } } = await supabaseClient.auth.getSession();
         const currentUser = session?.user ?? null;
         if (currentUser) {
-          await initializeUserDocument(currentUser);
+          // Pass the client instance to the database function
+          await initializeUserDocument(supabaseClient, currentUser);
         }
         setUser(currentUser);
       } catch (error) {
@@ -35,10 +42,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     checkUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange(async (_event, session) => {
       const currentUser = session?.user ?? null;
       if (currentUser) {
-        await initializeUserDocument(currentUser);
+        // Pass the client instance to the database function
+        await initializeUserDocument(supabaseClient, currentUser);
       }
       setUser(currentUser);
       setLoading(false);

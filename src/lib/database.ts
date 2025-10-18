@@ -1,7 +1,9 @@
-import { supabase } from './supabase';
+
+import { getSupabaseBrowserClient } from './supabase';
 import { modules } from '@/app/dashboard/modules';
 import type { UserProgress } from '@/types';
-import type { User } from '@supabase/supabase-js';
+import type { User, SupabaseClient } from '@supabase/supabase-js';
+import type { Database } from '@/types/supabase';
 
 function getInitialProgress(): UserProgress {
   return modules.reduce((acc, module) => {
@@ -16,7 +18,7 @@ function getInitialProgress(): UserProgress {
 }
 
 
-export async function initializeUserDocument(user: User) {
+export async function initializeUserDocument(supabase: SupabaseClient<Database>, user: User) {
   const { data: existingUser, error: fetchError } = await supabase
     .from('users')
     .select('id, progress')
@@ -74,6 +76,7 @@ export async function initializeUserDocument(user: User) {
 }
 
 export async function getUserProgress(uid: string): Promise<UserProgress | null> {
+  const supabase = getSupabaseBrowserClient();
   const { data, error } = await supabase
     .from('users')
     .select('progress')
@@ -89,6 +92,7 @@ export async function getUserProgress(uid: string): Promise<UserProgress | null>
 }
 
 export async function setLessonCompleted(uid: string, moduleId: string, lessonTitle: string, completed: boolean) {
+    const supabase = getSupabaseBrowserClient();
     const { data: user, error: fetchError } = await supabase
         .from('users')
         .select('progress')

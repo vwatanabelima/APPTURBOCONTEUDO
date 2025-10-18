@@ -2,15 +2,19 @@
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs';
 import type { Database } from '@/types/supabase';
 
-// Check if the environment variables are set
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn("Supabase environment variables are not set. Authentication and database features will be disabled.");
+// This function will create a new Supabase client instance for the browser.
+// It is designed to be called on the client-side, where process.env can access
+// NEXT_PUBLIC_ variables.
+export const getSupabaseBrowserClient = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  
+  if (!supabaseUrl || !supabaseAnonKey) {
+    // The UI in login/page.tsx will handle the case where these are not set.
+    // This check is a safeguard.
+  }
+  
+  // We don't use a singleton here to avoid server-side execution issues.
+  // createPagesBrowserClient is optimized to handle its own instance management on the client.
+  return createPagesBrowserClient<Database>();
 }
-
-// Initialize the Supabase client.
-// It is safe to initialize it even if the variables are not set,
-// as the client will not be able to connect and subsequent calls will fail gracefully.
-export const supabase = createPagesBrowserClient<Database>();

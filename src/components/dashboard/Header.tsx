@@ -1,10 +1,11 @@
+
 'use client';
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { LogOut, LifeBuoy } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { getSupabaseBrowserClient } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import {
@@ -51,6 +52,7 @@ export function Header() {
   const router = useRouter();
   const { toast } = useToast();
   const [progress, setProgress] = useState<UserProgress | null>(null);
+  const supabase = getSupabaseBrowserClient();
 
    useEffect(() => {
     if (user) {
