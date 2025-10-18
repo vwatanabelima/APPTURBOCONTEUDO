@@ -18,6 +18,7 @@ function getInitialProgress(): UserProgress {
 
 
 export async function initializeUserDocument(user: User) {
+  if (!db) return;
   const userRef = doc(db, 'users', user.uid);
   const docSnap = await getDoc(userRef);
 
@@ -54,6 +55,7 @@ export async function initializeUserDocument(user: User) {
 }
 
 export async function getUserProgress(uid: string): Promise<UserProgress | null> {
+  if (!db) return null;
   const userRef = doc(db, 'users', uid);
   const docSnap = await getDoc(userRef);
 
@@ -66,6 +68,7 @@ export async function getUserProgress(uid: string): Promise<UserProgress | null>
 }
 
 export async function setLessonCompleted(uid: string, moduleId: string, lessonTitle: string, completed: boolean) {
+  if (!db) return;
   const userRef = doc(db, 'users', uid);
   const fieldPath = `progress.${moduleId}.${lessonTitle}`;
   

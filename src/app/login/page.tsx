@@ -17,6 +17,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Icons } from '@/components/icons';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Terminal } from 'lucide-react';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Por favor, insira um email válido.' }),
@@ -44,6 +46,14 @@ export default function LoginPage() {
   }, [user, loading, router]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!auth) {
+        toast({
+            title: 'Erro de Configuração',
+            description: 'A conexão com o Firebase não foi inicializada. Verifique as variáveis de ambiente.',
+            variant: 'destructive',
+        });
+        return;
+    }
     setIsSubmitting(true);
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
@@ -71,6 +81,22 @@ export default function LoginPage() {
         <div className="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
       </div>
     );
+  }
+
+  if (!auth) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center p-4">
+        <div className="w-full max-w-md">
+           <Alert variant="destructive">
+            <Terminal className="h-4 w-4" />
+            <AlertTitle>Erro de Configuração do Firebase</AlertTitle>
+            <AlertDescription>
+              As variáveis de ambiente do Firebase não foram encontradas. Por favor, configure seu arquivo `.env` para usar a autenticação.
+            </AlertDescription>
+          </Alert>
+        </div>
+      </div>
+    )
   }
 
   return (

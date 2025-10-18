@@ -32,6 +32,7 @@ export default function ResetPasswordPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!auth) return;
     setIsSubmitting(true);
     try {
       await sendPasswordResetEmail(auth, values.email);
@@ -92,7 +93,7 @@ export default function ResetPasswordPage() {
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    <Button type="submit" className="w-full" disabled={isSubmitting || !auth}>
                       {isSubmitting ? 'Enviando...' : 'Enviar link de redefinição'}
                     </Button>
                   </form>

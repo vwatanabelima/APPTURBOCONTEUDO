@@ -11,8 +11,22 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const auth = getAuth(app);
-const db = getFirestore(app);
+// Check if all required environment variables are present
+const isFirebaseConfigValid = 
+  firebaseConfig.apiKey &&
+  firebaseConfig.authDomain &&
+  firebaseConfig.projectId &&
+  firebaseConfig.storageBucket &&
+  firebaseConfig.messagingSenderId &&
+  firebaseConfig.appId;
+
+const app = isFirebaseConfigValid && !getApps().length ? initializeApp(firebaseConfig) : (getApps().length ? getApp() : null);
+const auth = app ? getAuth(app) : null;
+const db = app ? getFirestore(app) : null;
+
+// Throw an error in development if the config is invalid, so it's clear what's wrong.
+if (!isFirebaseConfigValid && process.env.NODE_ENV === 'development') {
+    console.warn('Firebase config is incomplete. Please check your .env file.');
+}
 
 export { app, auth, db };
