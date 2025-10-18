@@ -40,7 +40,7 @@ export function ModuleCard({ module, progress, priority = false }: ModuleCardPro
   }
 
   return (
-     <Link href={`/dashboard/module/${module.id}`} passHref legacyBehavior>
+     <Link href={`/dashboard/module/${module.id}`}>
         <Card className="group relative block h-[444px] w-full cursor-pointer overflow-hidden rounded-lg border-none bg-card shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
             <Image
             src={imageUrl}
