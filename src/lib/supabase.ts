@@ -13,7 +13,4 @@ if (!supabaseUrl || !supabaseAnonKey) {
 // Initialize the Supabase client.
 // It is safe to initialize it even if the variables are not set,
 // as the client will not be able to connect and subsequent calls will fail gracefully.
-export const supabase = createPagesBrowserClient<Database>({
-  supabaseUrl,
-  supabaseKey: supabaseAnonKey
-});
+export const supabase = createPagesBrowserClient<Database>();
