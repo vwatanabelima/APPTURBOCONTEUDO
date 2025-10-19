@@ -1,4 +1,3 @@
-
 import { getSupabaseBrowserClient } from './supabase';
 import { modules } from '@/app/dashboard/modules';
 import type { UserProgress } from '@/types';
@@ -25,11 +24,14 @@ export async function initializeUserDocument(supabase: SupabaseClient<Database>,
     .eq('id', user.id)
     .single();
 
-  if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116: 'Not a single row was found'
-    console.error('Error fetching user:', fetchError);
+  // 'PGRST116' é o código para 'Not a single row was found', o que é esperado para um novo usuário.
+  // Se houver um erro, e NÃO for o erro esperado, nós o registramos e lançamos.
+  if (fetchError && fetchError.code !== 'PGRST116') {
+    console.error('Error fetching user profile:', fetchError.message);
     throw fetchError;
   }
 
+  // Se não houver um usuário existente, crie o documento de perfil.
   if (!existingUser) {
     const initialProgress = getInitialProgress();
     const { error: insertError } = await supabase.from('users').insert({
@@ -38,15 +40,16 @@ export async function initializeUserDocument(supabase: SupabaseClient<Database>,
       progress: initialProgress,
     });
     if (insertError) {
-      console.error('Error creating user profile:', insertError);
+      console.error('Error creating user profile:', insertError.message);
       throw insertError;
     }
   } else {
+    // Se o usuário já existe, verificamos se o progresso precisa ser atualizado com novos módulos/aulas.
     const existingProgress = existingUser.progress as UserProgress || {};
     const defaultProgress = getInitialProgress();
     let needsUpdate = false;
     
-    // Deep merge to add missing modules/lessons without overwriting existing progress
+    // Deep merge para adicionar módulos/aulas ausentes sem sobrescrever o progresso existente.
     for (const moduleId in defaultProgress) {
       if (!existingProgress[moduleId]) {
         existingProgress[moduleId] = defaultProgress[moduleId];
@@ -68,7 +71,7 @@ export async function initializeUserDocument(supabase: SupabaseClient<Database>,
             .eq('id', user.id);
         
         if (updateError) {
-            console.error('Error updating user progress with new lessons:', updateError);
+            console.error('Error updating user progress with new lessons:', updateError.message);
             throw updateError;
         }
     }
