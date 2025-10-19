@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -24,7 +23,7 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
-  const { supabase, user, setUser } = useAuth();
+  const { supabase, user } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,7 +39,6 @@ export default function LoginPage() {
   });
 
   useEffect(() => {
-    // Se o usuário já estiver logado (vindo do context), redirecione-o para o dashboard.
     if (user) {
       router.push('/dashboard');
     }
@@ -62,18 +60,35 @@ export default function LoginPage() {
         });
         setIsSubmitting(false);
     } else if (data.user) {
-        toast({
-            title: 'Login bem-sucedido!',
-            description: 'Redirecionando para o painel...',
-            variant: 'success',
-        });
-        // Inicializa o documento do usuário
-        await initializeUserDocument(supabase, data.user);
-        // Atualiza o estado global
-        setUser(data.user);
-        // Força o redirecionamento e a atualização da página
-        router.push('/dashboard');
-        router.refresh(); 
+        try {
+            await initializeUserDocument(data.user);
+            toast({
+                title: 'Login bem-sucedido!',
+                description: 'Redirecionando para o painel...',
+                variant: 'success',
+            });
+            router.push('/dashboard');
+            router.refresh(); 
+        } catch (initError: any) {
+            console.error('Falha ao inicializar perfil do usuário:', initError);
+            if (initError?.message?.includes('violates row-level security policy')) {
+                 toast({
+                    title: 'Erro de Permissão no Banco de Dados',
+                    description: 'Seu perfil não pôde ser criado devido a políticas de segurança. Verifique as políticas de "INSERT" na tabela "users" do seu painel Supabase.',
+                    variant: 'destructive',
+                    duration: 10000, // Show for longer
+                });
+            } else {
+                toast({
+                    title: 'Erro Pós-Login',
+                    description: 'Seu login foi bem-sucedido, mas houve um erro ao configurar seu perfil.',
+                    variant: 'destructive',
+                });
+            }
+             // Importante: faça o logout para não deixar o usuário em um estado inconsistente
+            await supabase.auth.signOut();
+            setIsSubmitting(false);
+        }
     }
   }
   

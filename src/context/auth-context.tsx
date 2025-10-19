@@ -8,32 +8,24 @@ import type { Database } from '@/types/supabase';
 type AuthContextType = {
   user: User | null;
   supabase: SupabaseClient<Database>;
-  loading: boolean;
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+// @ts-ignore
+const AuthContext = createContext<AuthContextType>();
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [supabase] = useState(() => getSupabaseBrowserClient());
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
 
+  // O listener onAuthStateChange é a forma mais confiável de manter o estado do usuário
+  // sincronizado em toda a aplicação (abas, etc.).
   useEffect(() => {
-    const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
-      setLoading(false);
-    };
-
-    getSession();
-
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
     });
 
     return () => {
-      authListener?.subscription.unsubscribe();
+      subscription.unsubscribe();
     };
   }, [supabase]);
 
@@ -41,7 +33,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = {
     user,
     supabase,
-    loading
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

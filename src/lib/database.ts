@@ -1,8 +1,7 @@
 import { getSupabaseBrowserClient } from './supabase';
 import { modules } from '@/app/dashboard/modules';
 import type { UserProgress } from '@/types';
-import type { User, SupabaseClient } from '@supabase/supabase-js';
-import type { Database } from '@/types/supabase';
+import type { User } from '@supabase/supabase-js';
 
 function getInitialProgress(): UserProgress {
   return modules.reduce((acc, module) => {
@@ -17,7 +16,8 @@ function getInitialProgress(): UserProgress {
 }
 
 
-export async function initializeUserDocument(supabase: SupabaseClient<Database>, user: User) {
+export async function initializeUserDocument(user: User) {
+  const supabase = getSupabaseBrowserClient();
   const { data: existingUser, error: fetchError } = await supabase
     .from('users')
     .select('id, progress')
