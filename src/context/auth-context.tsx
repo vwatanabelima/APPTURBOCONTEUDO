@@ -8,22 +8,31 @@ import type { Database } from '@/types/supabase';
 type AuthContextType = {
   user: User | null;
   supabase: SupabaseClient<Database>;
+  setUser: (user: User | null) => void; // Adicionado para permitir atualização manual
 };
 
-// @ts-ignore
-const AuthContext = createContext<AuthContextType>();
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [supabase] = useState(() => getSupabaseBrowserClient());
   const [user, setUser] = useState<User | null>(null);
 
-  // O listener onAuthStateChange é a forma mais confiável de manter o estado do usuário
-  // sincronizado em toda a aplicação (abas, etc.).
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    // Função para buscar a sessão atual e definir o usuário.
+    const fetchSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
+    };
+
+    // Busca a sessão inicial quando o componente é montado.
+    fetchSession();
+
+    // O listener mantém o estado do usuário sincronizado entre abas/janelas.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
 
+    // Limpa a inscrição quando o componente é desmontado.
     return () => {
       subscription.unsubscribe();
     };
@@ -33,6 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = {
     user,
     supabase,
+    setUser, // Expondo a função setUser
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -23,7 +23,7 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
-  const { supabase, user } = useAuth();
+  const { supabase, user, setUser } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,6 +62,7 @@ export default function LoginPage() {
     } else if (data.user) {
         try {
             await initializeUserDocument(data.user);
+            setUser(data.user); // Explicitamente atualiza o estado do usuário
             toast({
                 title: 'Login bem-sucedido!',
                 description: 'Redirecionando para o painel...',
