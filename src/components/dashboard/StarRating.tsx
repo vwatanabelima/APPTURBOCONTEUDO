@@ -4,10 +4,13 @@
 import { useState } from 'react';
 import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 
-export function StarRating() {
-  const [rating, setRating] = useState(0);
+type StarRatingProps = {
+  rating: number;
+  onSetRating: (rating: number) => void;
+};
+
+export function StarRating({ rating, onSetRating }: StarRatingProps) {
   const [hover, setHover] = useState(0);
 
   return (
@@ -19,7 +22,7 @@ export function StarRating() {
             <button
               type="button"
               key={ratingValue}
-              onClick={() => setRating(ratingValue)}
+              onClick={() => onSetRating(ratingValue)}
               onMouseEnter={() => setHover(ratingValue)}
               onMouseLeave={() => setHover(0)}
               className="cursor-pointer bg-transparent p-0"

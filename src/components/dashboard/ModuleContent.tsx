@@ -19,7 +19,6 @@ import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 type ModuleContentProps = Omit<ModuleWithContent, 'Icon'>;
 
-
 const DynamicIcon = ({ name, ...props }: { name: keyof typeof LucideIcons } & LucideIcons.LucideProps) => {
   const Icon = LucideIcons[name];
 
@@ -39,6 +38,7 @@ export default function ModuleContent({ id, title, description, lessons, complem
   const initialLesson = lessons?.[0] ?? { title: 'Introdução ao Módulo' };
   const [selectedLesson, setSelectedLesson] = useState<Lesson>(initialLesson);
   const [lessonProgress, setLessonProgress] = useState<LessonProgress>({});
+  const [ratings, setRatings] = useState<{ [lessonTitle: string]: number }>({});
 
   useEffect(() => {
     if (user) {
@@ -47,6 +47,8 @@ export default function ModuleContent({ id, title, description, lessons, complem
           setLessonProgress(progress[id]);
         }
       });
+      // Here you would fetch stored ratings for the user and module
+      // For now, we'll just use local state
     }
   }, [user, id]);
 
@@ -73,10 +75,17 @@ export default function ModuleContent({ id, title, description, lessons, complem
       }
     });
   };
+
+  const handleSetRating = (rating: number) => {
+    setRatings(prev => ({...prev, [selectedLesson.title]: rating}));
+    // Here you would also save the rating to your database
+    console.log(`Rating for "${selectedLesson.title}" set to ${rating}`);
+  }
   
   const hasLessons = lessons && lessons.length > 0;
   const lessonList = hasLessons ? lessons : [initialLesson];
   const isLessonCompleted = !!lessonProgress[selectedLesson.title];
+  const currentRating = ratings[selectedLesson.title] || 0;
 
   return (
     <div className="container mx-auto max-w-7xl px-4 py-6 sm:py-8">
@@ -121,7 +130,7 @@ export default function ModuleContent({ id, title, description, lessons, complem
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-lg border p-4">
               <div className="space-y-1">
                 <h3 className="text-lg font-semibold">Avalie esta aula</h3>
-                <StarRating />
+                <StarRating rating={currentRating} onSetRating={handleSetRating} />
               </div>
               {hasLessons && (
                 <Button 
