@@ -69,23 +69,14 @@ export default function LoginPage() {
                 variant: 'success',
             });
             router.push('/dashboard');
-            router.refresh(); 
         } catch (initError: any) {
             console.error('Falha ao inicializar perfil do usuário:', initError);
-            if (initError?.message?.includes('violates row-level security policy')) {
-                 toast({
-                    title: 'Erro de Permissão no Banco de Dados',
-                    description: 'Seu perfil não pôde ser criado devido a políticas de segurança. Verifique as políticas de "INSERT" na tabela "users" do seu painel Supabase.',
-                    variant: 'destructive',
-                    duration: 10000, // Show for longer
-                });
-            } else {
-                toast({
-                    title: 'Erro Pós-Login',
-                    description: 'Seu login foi bem-sucedido, mas houve um erro ao configurar seu perfil.',
-                    variant: 'destructive',
-                });
-            }
+            toast({
+                title: 'Erro Pós-Login',
+                description: 'Seu login foi bem-sucedido, mas houve um erro ao configurar seu perfil. Verifique as permissões do banco de dados.',
+                variant: 'destructive',
+                duration: 10000,
+            });
              // Importante: faça o logout para não deixar o usuário em um estado inconsistente
             await supabase.auth.signOut();
             setIsSubmitting(false);
