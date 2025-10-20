@@ -10,7 +10,8 @@ import {
   FileText,
   Youtube,
   Star,
-  Bot
+  Bot,
+  Download
 } from 'lucide-react';
 
 export type Lesson = {
@@ -50,8 +51,13 @@ export const modules: (ModuleWithContent)[] = [
     complementaryMaterials: [
         {
             title: "PLUGIN TURBOCONTEÚDO",
-            href: "https://www.figma.com/community/plugin/1344473634037599298/turboconteudo",
+            href: "https://drive.google.com/file/d/178SAhvPEFacgA-IgPmDQgfIDTy9ah1KM/view?usp=sharing",
             iconName: "FileText"
+        },
+        {
+            title: "DOWNLOAD DO FIGMA DESKTOP",
+            href: "https://www.figma.com/pt-br/downloads/",
+            iconName: "Download"
         }
     ]
   },
