@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { LogOut, LifeBuoy } from 'lucide-react';
+import { LogOut, LifeBuoy, User as UserIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -121,6 +121,12 @@ export function Header() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
+             <DropdownMenuItem asChild>
+              <Link href="/dashboard/account">
+                <UserIcon className="mr-2 h-4 w-4" />
+                <span>Minha Conta</span>
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href="/support">
                 <LifeBuoy className="mr-2 h-4 w-4" />
