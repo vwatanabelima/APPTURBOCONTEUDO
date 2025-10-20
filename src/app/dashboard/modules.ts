@@ -100,7 +100,7 @@ export const modules: (ModuleWithContent)[] = [
     description: 'Agora é só exportar seu conteúdo visual no formato certo para Instagram, LinkedIn ou onde quiser postar — pronto para publicar com consistência.',
     Icon: Share2,
     lessons: [
-      { title: 'EDITAR E EXPORTAR O CONTEÚDO', youtubeVideoId: 'dQw4w9WgXcQ' }
+      { title: 'EDITAR E EXPORTAR O CONTEÚDO', youtubeVideoId: 'C6ZT-r32oVw' }
     ],
     complementaryMaterials: []
   },
